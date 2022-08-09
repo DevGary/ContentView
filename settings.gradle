@@ -18,3 +18,4 @@ rootProject.name = "Content View Demo"
 include ':demo'
 include ':content-view'
 include ':content-link-api'
+include ':content-core'
