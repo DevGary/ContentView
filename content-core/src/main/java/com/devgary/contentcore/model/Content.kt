@@ -1,4 +1,4 @@
-package com.devgary.contentview.content
+package com.devgary.contentcore.model
 
 data class Content(
     val url: String,

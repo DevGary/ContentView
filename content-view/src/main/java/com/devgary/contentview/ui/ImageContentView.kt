@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
-import com.devgary.contentview.content.Content
+import com.devgary.contentcore.model.Content
 import com.devgary.contentview.content.ContentHandler
 import com.devgary.contentview.databinding.ImageContentViewBinding
 
