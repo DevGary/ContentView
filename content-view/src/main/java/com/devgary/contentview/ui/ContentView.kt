@@ -4,9 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import com.devgary.contentview.content.Content
+import com.devgary.contentcore.model.Content
 import com.devgary.contentview.content.ContentHandler
-import com.devgary.contentview.content.ContentType
+import com.devgary.contentcore.model.ContentType
 import com.devgary.contentview.databinding.ContentViewBinding
 
 class ContentView @JvmOverloads constructor(

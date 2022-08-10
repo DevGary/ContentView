@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-import com.devgary.contentview.content.Content
+import com.devgary.contentcore.model.Content
 import com.devgary.contentview.content.ContentHandler
 import com.devgary.contentview.databinding.VideoContentViewBinding
 
