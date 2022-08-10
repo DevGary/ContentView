@@ -38,6 +38,10 @@ class VideoContentView @JvmOverloads constructor(
         }
     }
     
+    override fun setViewVisibility(visibility: Int) {
+        this.visibility = visibility
+    }
+
     private fun setVideoViewToWrapHeight(videoView: View) {
         videoView.post {
             val params = layoutParams
