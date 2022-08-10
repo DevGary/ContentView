@@ -27,6 +27,10 @@ class ImageContentView @JvmOverloads constructor(
     private fun setupView() {
     }
 
+    override fun setViewVisibility(visibility: Int) {
+        this.visibility = visibility
+    }
+    
     override fun showContent(content: Content) {
         Glide.with(context)
             .load(content.url)
