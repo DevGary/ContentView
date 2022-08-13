@@ -18,4 +18,10 @@
         app:showAsAction="never"
         android:title="Show Video">
     </item>
+
+    <item
+        android:id="@+id/menu_streamable"
+        app:showAsAction="never"
+        android:title="Streamable Video">
+    </item>
 </menu>
