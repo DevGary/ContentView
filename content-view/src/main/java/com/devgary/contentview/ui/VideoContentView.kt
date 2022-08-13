@@ -7,28 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.devgary.contentcore.model.Content
-import com.devgary.contentview.content.ContentHandler
 import com.devgary.contentview.databinding.VideoContentViewBinding
 
 class VideoContentView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : FrameLayout(context, attrs, defStyleAttr), ContentHandler {
+) : FrameLayout(context, attrs, defStyleAttr) {
     private val binding = VideoContentViewBinding.inflate(LayoutInflater.from(context), this, true)
-    
-    init {
-        initView(attrs)
-    }
 
-    private fun initView(attrs: AttributeSet?) {
-        setupView()
-    }
-
-    private fun setupView() {
-    }
-
-    override fun showContent(content: Content) {
+    fun showContent(content: Content) {
         binding.videoview.apply { 
             setOnPreparedListener { 
                 this.start()
@@ -38,7 +26,7 @@ class VideoContentView @JvmOverloads constructor(
         }
     }
     
-    override fun setViewVisibility(visibility: Int) {
+    fun setViewVisibility(visibility: Int) {
         this.visibility = visibility
     }
 
