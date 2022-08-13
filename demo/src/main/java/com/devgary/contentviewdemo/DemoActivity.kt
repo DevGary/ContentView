@@ -4,15 +4,30 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.devgary.contentcore.model.Content
 import com.devgary.contentcore.model.ContentType
+import com.devgary.contentviewdemo.util.cancel
 import com.devgary.contentlinkapi.api.streamable.StreamableApi
 import com.devgary.contentview.R
 import com.devgary.contentview.databinding.ActivityDemoBinding
+import kotlinx.coroutines.*
 
 class DemoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDemoBinding
 
+    val streamableApi: StreamableApi by lazy { StreamableApi() }
+    
+    var coroutineJob: Job? = null
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Toast.makeText(
+            /* context = */ this,
+            /* text = */ "Error: ${throwable.cause?.message}",
+            /* duration = */ Toast.LENGTH_LONG
+        ).show()
+    }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDemoBinding.inflate(layoutInflater)
@@ -30,7 +45,9 @@ class DemoActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.menu_streamable -> {
-                StreamableApi().getVideos("hn8hq").subscribe { response ->
+                coroutineJob.cancel()
+                coroutineJob = lifecycleScope.launch(coroutineExceptionHandler) {
+                    val response = streamableApi.getVideo("hn8hq")
                     response.let {
                         val video = response.videos
                             .filter { v -> v.url.isNotEmpty() }
