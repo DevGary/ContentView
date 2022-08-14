@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.devgary.contentcore.model.Content
 import com.devgary.contentcore.model.ContentType
+import com.devgary.contentlinkapi.api.gfycat.GfycatApi
 import com.devgary.contentviewdemo.util.cancel
 import com.devgary.contentlinkapi.api.streamable.StreamableApi
 import com.devgary.contentview.R
@@ -17,7 +18,13 @@ import kotlinx.coroutines.*
 class DemoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDemoBinding
 
-    val streamableApi: StreamableApi by lazy { StreamableApi() }
+    private val streamableApi: StreamableApi by lazy { StreamableApi() }
+    private val gfycatApi: GfycatApi by lazy {
+        GfycatApi(
+            clientId = ***REMOVED***,
+            clientSecret = ***REMOVED***
+        )
+    }
     
     var coroutineJob: Job? = null
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -56,6 +63,16 @@ class DemoActivity : AppCompatActivity() {
                         video?.let {
                             binding.contentview.showContent(Content(video.url, ContentType.VIDEO))
                         }
+                    }
+                }
+                return true
+            }
+            R.id.menu_gfycat_video -> {
+                coroutineJob.cancel()
+                coroutineJob = lifecycleScope.launch(coroutineExceptionHandler) {
+                    val response = gfycatApi.getGfycat("https://gfycat.com/everlastingunrealisticbagworm-shrek-olhar-sad-cat")
+                    response.mp4Url?.let {
+                        binding.contentview.showContent(Content(it, ContentType.VIDEO))
                     }
                 }
                 return true

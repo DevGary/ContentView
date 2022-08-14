@@ -24,4 +24,10 @@
         app:showAsAction="never"
         android:title="Streamable Video">
     </item>
+    
+    <item
+        android:id="@+id/menu_gfycat_video"
+        app:showAsAction="never"
+        android:title="Gfycat Video">
+    </item>
 </menu>
