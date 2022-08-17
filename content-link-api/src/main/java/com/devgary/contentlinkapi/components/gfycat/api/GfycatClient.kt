@@ -1,12 +1,12 @@
-package com.devgary.contentlinkapi.api.gfycat
+package com.devgary.contentlinkapi.components.gfycat.api
 
 import android.util.Log
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.name
 import com.devgary.contentcore.util.secondsToMillis
-import com.devgary.contentlinkapi.api.gfycat.model.GfycatAuthenticationRequest
-import com.devgary.contentlinkapi.api.gfycat.model.GfycatAuthenticationResponse
-import com.devgary.contentlinkapi.api.gfycat.model.GfycatItem
+import com.devgary.contentlinkapi.components.gfycat.api.model.GfycatAuthenticationRequest
+import com.devgary.contentlinkapi.components.gfycat.api.model.GfycatAuthenticationResponse
+import com.devgary.contentlinkapi.components.gfycat.api.model.GfycatItem
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient

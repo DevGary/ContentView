@@ -1,6 +1,8 @@
-package com.devgary.contentlinkapi.api.gfycat
+package com.devgary.contentlinkapi.components.gfycat.api
 
-import com.devgary.contentlinkapi.api.gfycat.model.*
+import com.devgary.contentlinkapi.components.gfycat.api.model.GfycatAuthenticationRequest
+import com.devgary.contentlinkapi.components.gfycat.api.model.GfycatAuthenticationResponse
+import com.devgary.contentlinkapi.components.gfycat.api.model.GfycatItemResponse
 import retrofit2.http.*
 
 interface GfycatEndpoint {

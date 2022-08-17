@@ -1,6 +1,6 @@
-package com.devgary.contentlinkapi.api.streamable
+package com.devgary.contentlinkapi.components.streamable.api.model
 
-import com.devgary.contentlinkapi.api.ApiException
+import com.devgary.contentlinkapi.components.ApiException
 import com.squareup.moshi.*
 
 class StreamableVideoResponseAdapter {

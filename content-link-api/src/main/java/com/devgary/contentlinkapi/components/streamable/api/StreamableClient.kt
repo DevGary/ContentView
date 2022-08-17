@@ -1,8 +1,10 @@
-package com.devgary.contentlinkapi.api.streamable
+package com.devgary.contentlinkapi.components.streamable.api
 
 import android.util.Log
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.name
+import com.devgary.contentlinkapi.components.streamable.api.model.StreamableVideoResponse
+import com.devgary.contentlinkapi.components.streamable.api.model.StreamableVideoResponseAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient

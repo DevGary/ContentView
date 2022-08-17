@@ -1,4 +1,4 @@
-package com.devgary.contentlinkapi.api.gfycat
+package com.devgary.contentlinkapi.components.gfycat
 
 object GfycatUtils {
     private const val GFYCAT_DOMAIN = "gfycat.com"

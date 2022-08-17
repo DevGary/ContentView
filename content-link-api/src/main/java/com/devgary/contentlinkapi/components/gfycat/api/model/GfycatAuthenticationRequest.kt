@@ -1,4 +1,4 @@
-package com.devgary.contentlinkapi.api.gfycat.model
+package com.devgary.contentlinkapi.components.gfycat.api.model
 
 import com.squareup.moshi.Json
 

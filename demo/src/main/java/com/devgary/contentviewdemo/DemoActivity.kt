@@ -8,9 +8,9 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.devgary.contentcore.model.Content
 import com.devgary.contentcore.model.ContentType
-import com.devgary.contentlinkapi.api.gfycat.GfycatClient
+import com.devgary.contentlinkapi.components.gfycat.api.GfycatClient
 import com.devgary.contentviewdemo.util.cancel
-import com.devgary.contentlinkapi.api.streamable.StreamableClient
+import com.devgary.contentlinkapi.components.streamable.api.StreamableClient
 import com.devgary.contentview.R
 import com.devgary.contentview.databinding.ActivityDemoBinding
 import kotlinx.coroutines.*
