@@ -1,4 +1,4 @@
-package com.devgary.contentview.ui
+package com.devgary.contentview.components.video
 
 import android.content.Context
 import android.net.Uri

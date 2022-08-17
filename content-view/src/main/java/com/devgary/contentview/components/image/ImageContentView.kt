@@ -1,4 +1,4 @@
-package com.devgary.contentview.ui
+package com.devgary.contentview.components.image
 
 import android.content.Context
 import android.util.AttributeSet

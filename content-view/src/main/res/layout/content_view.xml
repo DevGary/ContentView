@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.devgary.contentview.ui.ImageContentView
+    <com.devgary.contentview.components.image.ImageContentView
         android:id="@+id/image_contentview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     
-    <com.devgary.contentview.ui.VideoContentView
+    <com.devgary.contentview.components.video.VideoContentView
         android:id="@+id/video_contentview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

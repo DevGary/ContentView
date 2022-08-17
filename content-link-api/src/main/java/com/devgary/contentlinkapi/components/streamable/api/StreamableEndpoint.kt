@@ -1,5 +1,6 @@
-package com.devgary.contentlinkapi.api.streamable
+package com.devgary.contentlinkapi.components.streamable.api
 
+import com.devgary.contentlinkapi.components.streamable.api.model.StreamableVideoResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

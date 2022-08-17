@@ -1,4 +1,4 @@
-package com.devgary.contentlinkapi.api.streamable
+package com.devgary.contentlinkapi.components.streamable.api.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

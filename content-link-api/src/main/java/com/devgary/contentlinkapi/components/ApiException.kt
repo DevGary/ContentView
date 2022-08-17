@@ -1,3 +1,3 @@
-package com.devgary.contentlinkapi.api
+package com.devgary.contentlinkapi.components
 
 class ApiException(message: String) : Exception(message)

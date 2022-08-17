@@ -1,4 +1,4 @@
-package com.devgary.contentview.ui
+package com.devgary.contentview.content
 
 import android.content.Context
 import android.util.AttributeSet
@@ -9,7 +9,6 @@ import com.devgary.contentcore.model.Content
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.classNameWithValue
 import com.devgary.contentcore.util.name
-import com.devgary.contentview.content.ContentHandler
 
 abstract class ContentHandlerView @JvmOverloads constructor(
     context: Context,
