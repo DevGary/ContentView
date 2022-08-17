@@ -10,7 +10,7 @@ import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.classNameWithValue
 import com.devgary.contentcore.util.name
 
-abstract class ContentHandlerView @JvmOverloads constructor(
+abstract class AbstractContentHandlerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
