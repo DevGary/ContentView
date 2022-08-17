@@ -8,9 +8,9 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.devgary.contentcore.model.Content
 import com.devgary.contentcore.model.ContentType
-import com.devgary.contentlinkapi.api.gfycat.GfycatApi
+import com.devgary.contentlinkapi.api.gfycat.GfycatClient
 import com.devgary.contentviewdemo.util.cancel
-import com.devgary.contentlinkapi.api.streamable.StreamableApi
+import com.devgary.contentlinkapi.api.streamable.StreamableClient
 import com.devgary.contentview.R
 import com.devgary.contentview.databinding.ActivityDemoBinding
 import kotlinx.coroutines.*
@@ -18,9 +18,9 @@ import kotlinx.coroutines.*
 class DemoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDemoBinding
 
-    private val streamableApi: StreamableApi by lazy { StreamableApi() }
-    private val gfycatApi: GfycatApi by lazy {
-        GfycatApi(
+    private val streamableApi: StreamableClient by lazy { StreamableClient() }
+    private val gfycatClient: GfycatClient by lazy {
+        GfycatClient(
             clientId = ***REMOVED***,
             clientSecret = ***REMOVED***
         )
@@ -70,7 +70,7 @@ class DemoActivity : AppCompatActivity() {
             R.id.menu_gfycat_video -> {
                 coroutineJob.cancel()
                 coroutineJob = lifecycleScope.launch(coroutineExceptionHandler) {
-                    val response = gfycatApi.getGfycat("https://gfycat.com/everlastingunrealisticbagworm-shrek-olhar-sad-cat")
+                    val response = gfycatClient.getGfycat("everlastingunrealisticbagworm")
                     response.mp4Url?.let {
                         binding.contentview.showContent(Content(it, ContentType.VIDEO))
                     }
