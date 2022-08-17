@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class StreamableApi {
+class StreamableClient {
     private val BASE_URL = "https://api.streamable.com/"
     
     private val cachedStreamableVideoResponses: MutableMap<String, StreamableVideoResponse> = HashMap()

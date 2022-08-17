@@ -1,17 +1,20 @@
 package com.devgary.contentlinkapi.api.gfycat
 
+import android.util.Log
+import com.devgary.contentcore.util.TAG
+import com.devgary.contentcore.util.name
 import com.devgary.contentcore.util.secondsToMillis
-import com.devgary.contentlinkapi.api.ApiException
 import com.devgary.contentlinkapi.api.gfycat.model.GfycatAuthenticationRequest
 import com.devgary.contentlinkapi.api.gfycat.model.GfycatAuthenticationResponse
 import com.devgary.contentlinkapi.api.gfycat.model.GfycatItem
+import com.devgary.contentlinkapi.api.streamable.StreamableVideoResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class GfycatApi(
+class GfycatClient(
     private val clientId: String,
     private val clientSecret: String,
 ) {
@@ -19,7 +22,7 @@ class GfycatApi(
     private val BASE_URL = "https://api.gfycat.com/v1/"
 
     var lastSuccessfulGfycatAuthResponse: GfycatAuthenticationResponse? = null
-    private val gfycatNameToGfycatItems: MutableMap<String, GfycatItem> by lazy { HashMap() }
+    private val cachedGfycatItems: MutableMap<String, GfycatItem> by lazy { HashMap() }
     
     init {
         val moshi = Moshi.Builder()
@@ -53,25 +56,16 @@ class GfycatApi(
         return authenticate().accessToken
     } 
 
-    suspend fun getGfycat(url: String): GfycatItem {
-        gfycatNameToGfycatItems[url]?.let { 
+    suspend fun getGfycat(gfycatName: String): GfycatItem {
+        cachedGfycatItems[gfycatName]?.let {
+            Log.i(TAG, "Returning cached ${name<GfycatItem>()} for gfycatName = $gfycatName")
             return it
         }
 
-        val parsedGfycatName: String? = GfycatUtils.parseGfycatNameFromUrl(url)
-
-        if (parsedGfycatName.isNullOrEmpty().not()) {
-            getGfycatItem(parsedGfycatName!!).also {
-                gfycatNameToGfycatItems[parsedGfycatName] = it
-                return it
-            }
+        gfycatEndpoint.getGfycatItem(getAuthenticatedAccessToken(), gfycatName).gfycatItem.also {
+            cachedGfycatItems[gfycatName] = it
+            Log.i(TAG, "Returning network ${name<GfycatItem>()} for gfycatName = $gfycatName")
+            return it
         }
-        else {
-            throw ApiException("Could not parse gfycat name from gfycat url $url")
-        }
-    }
-
-    private suspend fun getGfycatItem(gfycatName: String): GfycatItem {
-        return gfycatEndpoint.getGfycatItem(getAuthenticatedAccessToken(), gfycatName).gfycatItem
     }
 }
