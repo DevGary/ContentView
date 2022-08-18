@@ -23,8 +23,8 @@ class DemoActivity : AppCompatActivity() {
                 return listOf(
                     StreamableContentLinkHandler(),
                     GfycatContentLinkHandler(
-                        clientId = ***REMOVED***,
-                        clientSecret = ***REMOVED***
+                        clientId = BuildConfig.GFYCAT_CLIENT_ID,
+                        clientSecret = BuildConfig.GFYCAT_CLIENT_SECRET
                     )
                 )
             }
