@@ -11,8 +11,7 @@ import com.devgary.contentlinkapi.components.streamable.StreamableContentLinkHan
 import com.devgary.contentlinkapi.content.AbstractContentLinkApi
 import com.devgary.contentlinkapi.content.ContentLinkHandler
 import com.devgary.contentviewdemo.util.cancel
-import com.devgary.contentview.R
-import com.devgary.contentview.databinding.ActivityDemoBinding
+import com.devgary.contentviewdemo.databinding.ActivityDemoBinding
 import kotlinx.coroutines.*
 
 class DemoActivity : AppCompatActivity() {
