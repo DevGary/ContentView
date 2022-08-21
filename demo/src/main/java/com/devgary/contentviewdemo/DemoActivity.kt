@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.devgary.contentlinkapi.components.gfycat.GfycatContentLinkHandler
+import com.devgary.contentlinkapi.components.imgur.ImgurContentLinkHandler
 import com.devgary.contentlinkapi.components.streamable.StreamableContentLinkHandler
 import com.devgary.contentlinkapi.content.AbstractContentLinkApi
 import com.devgary.contentlinkapi.content.ContentLinkHandler
@@ -25,7 +26,11 @@ class DemoActivity : AppCompatActivity() {
                     GfycatContentLinkHandler(
                         clientId = BuildConfig.GFYCAT_CLIENT_ID,
                         clientSecret = BuildConfig.GFYCAT_CLIENT_SECRET
-                    )
+                    ),
+                    ImgurContentLinkHandler(
+                        authorizationHeader = BuildConfig.IMGUR_AUTHORIZATION_HEADER,
+                        mashapeKey = BuildConfig.IMGUR_MASHAPE_KEY
+                    ),
                 )
             }
         }
@@ -58,6 +63,7 @@ class DemoActivity : AppCompatActivity() {
         when(item.itemId) {
             R.id.menu_streamable -> SampleContent.STREAMABLE_URL
             R.id.menu_gfycat_video -> SampleContent.GFYCAT_URL
+            R.id.menu_imgur_album -> SampleContent.IMGUR_ALBUM_GALLERY_URL
             else -> null
         }?.let { url ->
             getContentJob.cancel()

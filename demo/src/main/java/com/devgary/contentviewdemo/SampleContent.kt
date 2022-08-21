@@ -10,5 +10,6 @@ class SampleContent {
         val MP4_VIDEO_CONTENT = Content("https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_30MB.mp4", VIDEO)
         val STREAMABLE_URL = "https://streamable.com/hwa6l"
         val GFYCAT_URL = "https://gfycat.com/foolishcompetentaegeancat-computer-working-laptop-work-cat"
+        val IMGUR_ALBUM_GALLERY_URL = "https://imgur.com/gallery/EH7seB9"
     }
 }
