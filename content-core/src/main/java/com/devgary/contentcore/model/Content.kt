@@ -1,6 +1,6 @@
 package com.devgary.contentcore.model
 
-data class Content(
+open class Content(
     val url: String,
     val type: ContentType,
 )
