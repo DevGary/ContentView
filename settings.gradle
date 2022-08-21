@@ -14,7 +14,7 @@ dependencyResolutionManagement {
         jcenter()
     }
 }
-rootProject.name = "Content View"
+rootProject.name = "ContentView"
 include ':demo'
 include ':content-view'
 include ':content-link-api'
