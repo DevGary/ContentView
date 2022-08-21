@@ -54,7 +54,7 @@ class DemoActivity : AppCompatActivity() {
         binding.contentview.showContent(SampleContent.IMAGE_CONTENT)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_demo, menu)
         return true
     }
