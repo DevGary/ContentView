@@ -4,5 +4,8 @@ enum class ContentType {
     IMAGE,
     GIF,
     VIDEO,
-    ALBUM
+    /**
+     * List of Content
+     */
+    COLLECTION,
 }
