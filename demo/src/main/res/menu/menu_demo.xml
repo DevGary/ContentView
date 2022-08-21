@@ -29,5 +29,11 @@
         android:id="@+id/menu_gfycat_video"
         app:showAsAction="never"
         android:title="Gfycat Video">
+    </item>  
+    
+    <item
+        android:id="@+id/menu_imgur_album"
+        app:showAsAction="never"
+        android:title="Imgur Album">
     </item>
 </menu>
