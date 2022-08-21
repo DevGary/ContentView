@@ -11,5 +11,6 @@ class SampleContent {
         
         val STREAMABLE_URL = "https://streamable.com/hwa6l"
         val GFYCAT_URL = "https://gfycat.com/foolishcompetentaegeancat-computer-working-laptop-work-cat"
+        val IMGUR_ALBUM_GALLERY_URL = "https://imgur.com/gallery/EH7seB9"
     }
 }
