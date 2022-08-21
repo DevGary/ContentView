@@ -2,6 +2,7 @@ package com.devgary.contentview.content
 
 import android.content.Context
 import android.util.AttributeSet
+import com.devgary.contentview.components.collection.CollectionContentHandler
 import com.devgary.contentview.components.image.ImageContentHandler
 import com.devgary.contentview.components.video.VideoContentHandler
 
@@ -14,6 +15,7 @@ class ContentView @JvmOverloads constructor(
         return listOf(
             ImageContentHandler(context),
             VideoContentHandler(context),
+            CollectionContentHandler(context),
         )
     }
 }
