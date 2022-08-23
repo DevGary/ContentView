@@ -3,6 +3,7 @@ package com.devgary.contentlinkapi.components.gfycat
 import com.devgary.contentcore.model.Content
 import com.devgary.contentcore.model.ContentType
 import com.devgary.contentlinkapi.components.gfycat.api.GfycatClient
+import com.devgary.contentlinkapi.components.gfycat.api.GfycatEndpoint
 import com.devgary.contentlinkapi.content.ContentLinkException
 import com.devgary.contentlinkapi.content.ContentLinkHandler
 import com.devgary.contentlinkapi.util.LinkUtils
@@ -12,7 +13,11 @@ class GfycatContentLinkHandler(
     private val clientSecret: String,
 ) : ContentLinkHandler {
     private val gfycatApi: GfycatClient by lazy { 
-        GfycatClient(clientId = clientId, clientSecret = clientSecret) 
+        GfycatClient(
+            clientId = clientId, 
+            clientSecret = clientSecret,
+            gfycatEndpoint = GfycatEndpoint.create()
+        ) 
     }
 
     override fun canHandleLink(url: String): Boolean {
