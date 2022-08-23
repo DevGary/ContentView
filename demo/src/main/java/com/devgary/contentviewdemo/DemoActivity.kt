@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.devgary.contentlinkapi.components.gfycat.GfycatContentLinkHandler
@@ -60,6 +61,8 @@ class DemoActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        binding.contentview.setViewVisibility(View.GONE)
+
         when(item.itemId) {
             R.id.menu_streamable -> SampleContent.STREAMABLE_URL
             R.id.menu_gfycat_video -> SampleContent.GFYCAT_URL
