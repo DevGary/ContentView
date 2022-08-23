@@ -33,7 +33,7 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
     override fun getView() = this
 
     override fun setViewVisibility(visibility: Int) {
-        this.visibility = visibility
+        contentHandlers.forEach { handler -> handler.setViewVisibility(visibility) }
     }
 
     override fun showContent(content: Content) {
@@ -42,7 +42,7 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
         }
 
         firstContentHandlerForContent?.let { handler ->
-            setContentHandlerViewVisibility(GONE)
+            setViewVisibility(GONE)
             addContentHandlerViewIfNotAdded(handler)
             handler.showContent(content) 
         } ?: run { 
@@ -52,10 +52,6 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
 
     override fun canShowContent(content: Content): Boolean {
         return contentHandlers.any { handler -> handler.canShowContent(content) }
-    }
-
-    private fun setContentHandlerViewVisibility(visibility: Int) {
-        contentHandlers.forEach { handler -> handler.setViewVisibility(visibility) }
     }
 
     private fun addContentHandlerViewIfNotAdded(handler: ContentHandler) {
