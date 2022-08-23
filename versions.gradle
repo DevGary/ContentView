@@ -19,6 +19,10 @@ ext.versions = [
         exomedia                  : '4.3.0',
         
         junit4                    : '4.13.2',
+        junit5                    : '5.8.2',
+        junit5Plugin              : '1.8.2.1',
         junitAndroidExt           : '1.1.3',
         expresso                  : '3.4.0',
+        mockk                     : '1.12.5',
+        mockwebserver             : '4.10.0',
 ]
