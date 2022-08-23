@@ -6,6 +6,7 @@ import com.devgary.contentcore.model.ContentType
 import com.devgary.contentcore.util.containsIgnoreCase
 import com.devgary.contentcore.util.isNotNullOrBlank
 import com.devgary.contentlinkapi.components.imgur.api.ImgurClient
+import com.devgary.contentlinkapi.components.imgur.api.ImgurEndpoint
 import com.devgary.contentlinkapi.components.imgur.api.model.ImgurImage
 import com.devgary.contentlinkapi.content.ContentLinkException
 import com.devgary.contentlinkapi.content.ContentLinkHandler
@@ -16,7 +17,10 @@ class ImgurContentLinkHandler(
     private val mashapeKey: String,
 ) : ContentLinkHandler {
     private val imgurApi: ImgurClient by lazy {
-        ImgurClient(authorizationHeader = authorizationHeader, mashapeKey = mashapeKey)
+        ImgurClient(ImgurEndpoint.create(
+            authorizationHeader = authorizationHeader,
+            mashapeKey = mashapeKey
+        ))
     }
 
     override fun canHandleLink(url: String): Boolean {

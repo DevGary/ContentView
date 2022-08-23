@@ -3,12 +3,15 @@ package com.devgary.contentlinkapi.components.streamable
 import com.devgary.contentcore.model.Content
 import com.devgary.contentcore.model.ContentType
 import com.devgary.contentlinkapi.components.streamable.api.StreamableClient
+import com.devgary.contentlinkapi.components.streamable.api.StreamableEndpoint
 import com.devgary.contentlinkapi.content.ContentLinkException
 import com.devgary.contentlinkapi.content.ContentLinkHandler
 import com.devgary.contentlinkapi.util.LinkUtils
 
 class StreamableContentLinkHandler : ContentLinkHandler {
-    private val streamableApi: StreamableClient by lazy { StreamableClient() }
+    private val streamableApi: StreamableClient by lazy {
+        StreamableClient(StreamableEndpoint.create())
+    }
 
     override fun canHandleLink(url: String): Boolean {
         return parseShortcodeFromUrl(url).isNullOrEmpty().not()
