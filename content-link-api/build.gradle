@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'de.mannodermaus.android-junit5'
 }
 
 android {
@@ -29,6 +30,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -38,13 +42,26 @@ dependencies {
     implementation "androidx.core:core-ktx:$versions.androidKtx"
     implementation "com.google.android.material:material:$versions.material"
 
-    testImplementation "junit:junit:$versions.junit4"
-    androidTestImplementation "androidx.test.ext:junit:$versions.junitAndroidExt"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.expresso"
-    
     implementation "com.squareup.moshi:moshi:$versions.moshi"
     implementation "com.squareup.moshi:moshi-kotlin:$versions.moshi"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$versions.moshi"
     implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofitMoshi"
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+
+    testImplementation project(path: ':test-core')
+
+    testImplementation "junit:junit:$versions.junit4"
+    androidTestImplementation "androidx.test.ext:junit:$versions.junitAndroidExt"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.expresso"
+
+    // Junit 5
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$versions.junit5"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$versions.junit5"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$versions.junit5"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$versions.junit5"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$versions.junit5"
+
+    testImplementation "io.mockk:mockk:$versions.mockk"
+
+    testImplementation "com.squareup.okhttp3:mockwebserver:$versions.mockwebserver"
 }
