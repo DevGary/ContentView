@@ -1,7 +1,7 @@
 package com.devgary.contentlinkapi.content
 
 import android.util.Log
-import com.devgary.contentcore.model.Content
+import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.name
 

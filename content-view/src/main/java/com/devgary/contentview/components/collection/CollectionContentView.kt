@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.viewpager2.widget.ViewPager2
-import com.devgary.contentcore.model.CollectionContent
+import com.devgary.contentcore.model.content.CollectionContent
 import com.devgary.contentview.databinding.CollectionContentViewBinding
 
 class CollectionContentView @JvmOverloads constructor(

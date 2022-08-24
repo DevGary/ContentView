@@ -2,8 +2,8 @@ package com.devgary.contentview.components.video
 
 import android.content.Context
 import android.view.View
-import com.devgary.contentcore.model.Content
-import com.devgary.contentcore.model.ContentType.*
+import com.devgary.contentcore.model.content.Content
+import com.devgary.contentcore.model.content.components.ContentType.*
 import com.devgary.contentview.content.ContentHandler
 
 class VideoContentHandler(private val context: Context) : ContentHandler {
