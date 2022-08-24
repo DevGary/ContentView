@@ -6,7 +6,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-import com.devgary.contentcore.model.Content
+import com.devgary.contentcore.model.content.Content
+import com.devgary.contentcore.model.content.components.ContentSource
 import com.devgary.contentview.databinding.VideoContentViewBinding
 
 class VideoContentView @JvmOverloads constructor(
@@ -21,8 +22,15 @@ class VideoContentView @JvmOverloads constructor(
             setOnPreparedListener { 
                 this.start()
             }
-            setVideoURI(Uri.parse(content.url))
             setVideoViewToWrapHeight(this)
+
+            when(content.source) {
+                is ContentSource.Url -> {
+                    val url = (content.source as ContentSource.Url).url
+                    setVideoURI(Uri.parse(url))
+                }
+                else -> {}
+            }
         }
     }
     

@@ -2,8 +2,8 @@ package com.devgary.contentview.components.collection
 
 import android.content.Context
 import android.view.View
-import com.devgary.contentcore.model.CollectionContent
-import com.devgary.contentcore.model.Content
+import com.devgary.contentcore.model.content.CollectionContent
+import com.devgary.contentcore.model.content.Content
 import com.devgary.contentview.content.ContentHandler
 
 class CollectionContentHandler(private val context: Context) : ContentHandler {

@@ -4,36 +4,42 @@
     <item
         android:id="@+id/menu_image"
         app:showAsAction="never"
-        android:title="Show Image">
+        android:title="Image Url">
+    </item>
+
+    <item
+        android:id="@+id/menu_image_no_ext"
+        app:showAsAction="never"
+        android:title="Image (No Mimetype)">
     </item>
 
     <item
         android:id="@+id/menu_gif"
         app:showAsAction="never"
-        android:title="Show Gif">
+        android:title="Gif Url">
     </item>
 
     <item
         android:id="@+id/menu_video"
         app:showAsAction="never"
-        android:title="Show Video">
+        android:title="Video Url">
     </item>
 
     <item
         android:id="@+id/menu_streamable"
         app:showAsAction="never"
-        android:title="Streamable Video">
+        android:title="Streamable Url">
     </item>
     
     <item
         android:id="@+id/menu_gfycat_video"
         app:showAsAction="never"
-        android:title="Gfycat Video">
+        android:title="Gfycat Url">
     </item>  
     
     <item
         android:id="@+id/menu_imgur_album"
         app:showAsAction="never"
-        android:title="Imgur Album">
+        android:title="Imgur Album Url">
     </item>
 </menu>

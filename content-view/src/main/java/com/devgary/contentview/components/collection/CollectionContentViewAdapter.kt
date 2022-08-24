@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.devbrackets.android.exomedia.ui.widget.VideoView
-import com.devgary.contentcore.model.Content
+import com.devgary.contentcore.model.content.Content
 import com.devgary.contentview.R
 import com.devgary.contentview.databinding.ItemLayoutContentViewPagerBinding
 

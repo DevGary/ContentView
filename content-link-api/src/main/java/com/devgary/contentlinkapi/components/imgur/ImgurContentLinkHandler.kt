@@ -1,8 +1,9 @@
 package com.devgary.contentlinkapi.components.imgur
 
-import com.devgary.contentcore.model.CollectionContent
-import com.devgary.contentcore.model.Content
-import com.devgary.contentcore.model.ContentType
+import com.devgary.contentcore.model.content.components.ContentSource
+import com.devgary.contentcore.model.content.components.ContentType
+import com.devgary.contentcore.model.content.CollectionContent
+import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.util.containsIgnoreCase
 import com.devgary.contentcore.util.isNotNullOrBlank
 import com.devgary.contentlinkapi.components.imgur.api.ImgurClient
@@ -40,15 +41,15 @@ class ImgurContentLinkHandler(
                 mapImgurImageToContent(imgurImage)
             }
 
-            return CollectionContent(url, collection)
+            return CollectionContent(ContentSource.Url(url), collection)
         }
     }
 
     private fun mapImgurImageToContent(imgurImage: ImgurImage): Content {
         return if (imgurImage.mp4Url.isNotNullOrBlank()) {
-            Content(imgurImage.url, ContentType.VIDEO)
+            Content(ContentSource.Url(imgurImage.mp4Url!!), ContentType.VIDEO)
         } else {
-            Content(imgurImage.url, ContentType.IMAGE)
+            Content(ContentSource.Url(imgurImage.url), ContentType.IMAGE)
         }
     }
 

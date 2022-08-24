@@ -1,7 +1,7 @@
 package com.devgary.contentview.content
 
 import android.view.View
-import com.devgary.contentcore.model.Content
+import com.devgary.contentcore.model.content.Content
 
 interface ContentHandler {
     fun getView(): View

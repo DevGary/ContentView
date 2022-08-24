@@ -1,7 +1,8 @@
 package com.devgary.contentlinkapi.components.streamable
 
-import com.devgary.contentcore.model.Content
-import com.devgary.contentcore.model.ContentType
+import com.devgary.contentcore.model.content.components.ContentSource
+import com.devgary.contentcore.model.content.components.ContentType
+import com.devgary.contentcore.model.content.Content
 import com.devgary.contentlinkapi.components.streamable.api.StreamableClient
 import com.devgary.contentlinkapi.components.streamable.api.StreamableEndpoint
 import com.devgary.contentlinkapi.content.ContentLinkException
@@ -31,7 +32,7 @@ class StreamableContentLinkHandler : ContentLinkHandler {
                 .minByOrNull { v -> v.bitrate }
 
             video?.let {
-                return Content(video.url, ContentType.VIDEO)
+                return Content(ContentSource.Url(video.url), ContentType.VIDEO)
             }
         }
 

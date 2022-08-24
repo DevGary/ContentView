@@ -1,20 +1,22 @@
 package com.devgary.contentviewdemo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.devgary.contentlinkapi.components.gfycat.GfycatContentLinkHandler
 import com.devgary.contentlinkapi.components.imgur.ImgurContentLinkHandler
 import com.devgary.contentlinkapi.components.streamable.StreamableContentLinkHandler
 import com.devgary.contentlinkapi.content.AbstractContentLinkApi
 import com.devgary.contentlinkapi.content.ContentLinkHandler
-import com.devgary.contentviewdemo.util.cancel
 import com.devgary.contentviewdemo.databinding.ActivityDemoBinding
-import kotlinx.coroutines.*
+import com.devgary.contentviewdemo.util.cancel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class DemoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDemoBinding
@@ -23,7 +25,6 @@ class DemoActivity : AppCompatActivity() {
         object : AbstractContentLinkApi() {
             override fun provideContentHandlers(): List<ContentLinkHandler> {
                 return listOf(
-                    StreamableContentLinkHandler(),
                     GfycatContentLinkHandler(
                         clientId = BuildConfig.GFYCAT_CLIENT_ID,
                         clientSecret = BuildConfig.GFYCAT_CLIENT_SECRET
@@ -32,6 +33,8 @@ class DemoActivity : AppCompatActivity() {
                         authorizationHeader = BuildConfig.IMGUR_AUTHORIZATION_HEADER,
                         mashapeKey = BuildConfig.IMGUR_MASHAPE_KEY
                     ),
+                    StreamableContentLinkHandler(),
+                    DemoFallthroughContentLinkHandler()
                 )
             }
         }
@@ -41,7 +44,7 @@ class DemoActivity : AppCompatActivity() {
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Toast.makeText(
             /* context = */ this,
-            /* text = */ "Error: ${throwable.cause?.message}",
+            /* text = */ "Error: ${throwable.message}",
             /* duration = */ Toast.LENGTH_LONG
         ).show()
     }
@@ -52,7 +55,7 @@ class DemoActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         
-        binding.contentview.showContent(SampleContent.IMAGE_CONTENT)
+        showContent(SampleContent.IMAGE_CONTENT)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -61,31 +64,28 @@ class DemoActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        binding.contentview.setViewVisibility(View.GONE)
-
         when(item.itemId) {
+            R.id.menu_image -> SampleContent.IMAGE_CONTENT
+            R.id.menu_image_no_ext -> SampleContent.IMAGE_CONTENT_NO_EXTENSION
+            R.id.menu_gif -> SampleContent.GIF_CONTENT
+            R.id.menu_video -> SampleContent.MP4_VIDEO_CONTENT
             R.id.menu_streamable -> SampleContent.STREAMABLE_URL
             R.id.menu_gfycat_video -> SampleContent.GFYCAT_URL
             R.id.menu_imgur_album -> SampleContent.IMGUR_ALBUM_GALLERY_URL
-            else -> null
-        }?.let { url ->
-            getContentJob.cancel()
-            getContentJob = lifecycleScope.launch(coroutineExceptionHandler) {
-                contentLinkApi.getContent(url)?.let { content ->
-                    binding.contentview.showContent(content)
-                }
-            }
+            else -> return super.onOptionsItemSelected(item)
+        }.let { url ->
+            showContent(url)
             return true
         }
-        
-        when(item.itemId) {
-            R.id.menu_image -> SampleContent.IMAGE_CONTENT
-            R.id.menu_gif -> SampleContent.GIF_CONTENT
-            R.id.menu_video -> SampleContent.MP4_VIDEO_CONTENT
-            else -> return super.onOptionsItemSelected(item)
-        }.let {
-            binding.contentview.showContent(it)
-            return true
+    }
+
+    private fun showContent(url: String) {
+        getContentJob.cancel()
+        binding.contentview.setViewVisibility(View.GONE)
+        getContentJob = lifecycleScope.launch(coroutineExceptionHandler) {
+            contentLinkApi.getContent(url)?.let { content ->
+                binding.contentview.showContent(content)
+            }
         }
     }
 }

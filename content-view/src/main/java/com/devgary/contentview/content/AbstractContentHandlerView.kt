@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.widget.FrameLayout
 import androidx.core.view.children
-import com.devgary.contentcore.model.Content
+import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.classNameWithValue
 import com.devgary.contentcore.util.name
