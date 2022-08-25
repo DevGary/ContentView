@@ -10,7 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import com.devgary.contentlinkapi.components.gfycat.GfycatContentLinkHandler
 import com.devgary.contentlinkapi.components.imgur.ImgurContentLinkHandler
 import com.devgary.contentlinkapi.components.streamable.StreamableContentLinkHandler
-import com.devgary.contentlinkapi.content.AbstractContentLinkApi
+import com.devgary.contentlinkapi.content.BaseContentLinkHandler
+import com.devgary.contentlinkapi.content.CompositeContentLinkHandler
 import com.devgary.contentlinkapi.content.ContentLinkHandler
 import com.devgary.contentviewdemo.databinding.ActivityDemoBinding
 import com.devgary.contentviewdemo.util.cancel
@@ -21,8 +22,8 @@ import kotlinx.coroutines.launch
 class DemoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDemoBinding
 
-    private val contentLinkApi: ContentLinkHandler by lazy {
-        object : AbstractContentLinkApi() {
+    private val contentLinkHandler: CompositeContentLinkHandler by lazy {
+        object : BaseContentLinkHandler() {
             override fun provideContentHandlers(): List<ContentLinkHandler> {
                 return listOf(
                     GfycatContentLinkHandler(
@@ -72,6 +73,10 @@ class DemoActivity : AppCompatActivity() {
             R.id.menu_streamable -> SampleContent.STREAMABLE_URL
             R.id.menu_gfycat_video -> SampleContent.GFYCAT_URL
             R.id.menu_imgur_album -> SampleContent.IMGUR_ALBUM_GALLERY_URL
+            R.id.menu_clear_memory -> {
+                contentLinkHandler.clearMemory()
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }.let { url ->
             showContent(url)
@@ -83,7 +88,7 @@ class DemoActivity : AppCompatActivity() {
         getContentJob.cancel()
         binding.contentview.setViewVisibility(View.GONE)
         getContentJob = lifecycleScope.launch(coroutineExceptionHandler) {
-            contentLinkApi.getContent(url)?.let { content ->
+            contentLinkHandler.getContent(url)?.let { content ->
                 binding.contentview.showContent(content)
             }
         }
