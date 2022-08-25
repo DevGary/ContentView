@@ -42,4 +42,10 @@
         app:showAsAction="never"
         android:title="Imgur Album Url">
     </item>
+
+    <item
+        android:id="@+id/menu_clear_memory"
+        app:showAsAction="never"
+        android:title="Clear Memory">
+    </item>
 </menu>

@@ -6,9 +6,11 @@ import com.devgary.contentcore.model.content.CollectionContent
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.util.containsIgnoreCase
 import com.devgary.contentcore.util.isNotNullOrBlank
+import com.devgary.contentcore.util.runIfLazyInitialized
 import com.devgary.contentlinkapi.components.imgur.api.ImgurClient
 import com.devgary.contentlinkapi.components.imgur.api.ImgurEndpoint
 import com.devgary.contentlinkapi.components.imgur.api.model.ImgurImage
+import com.devgary.contentlinkapi.components.interfaces.ClearableMemory
 import com.devgary.contentlinkapi.content.ContentLinkException
 import com.devgary.contentlinkapi.content.ContentLinkHandler
 import com.devgary.contentlinkapi.util.LinkUtils
@@ -16,8 +18,8 @@ import com.devgary.contentlinkapi.util.LinkUtils
 class ImgurContentLinkHandler(
     private val authorizationHeader: String,
     private val mashapeKey: String,
-) : ContentLinkHandler {
-    private val imgurApi: ImgurClient by lazy {
+) : ContentLinkHandler, ClearableMemory {
+    private val imgurClient: ImgurClient by lazy {
         ImgurClient(ImgurEndpoint.create(
             authorizationHeader = authorizationHeader,
             mashapeKey = mashapeKey
@@ -35,7 +37,7 @@ class ImgurContentLinkHandler(
             throw ContentLinkException("Could not parse imgurAlbumId from url $url")
         }
 
-        val response = imgurApi.getImgur(imgurAlbumId)
+        val response = imgurClient.getImgur(imgurAlbumId)
         response.let {
             val collection = it.images.map { imgurImage ->
                 mapImgurImageToContent(imgurImage)
@@ -65,5 +67,11 @@ class ImgurContentLinkHandler(
         }
 
         return LinkUtils.parseAlphanumericIdFromUrl(url = imgurAlbumUrl, startFromOccurrence = suffix)
+    }
+
+    override fun clearMemory() {
+        this::imgurClient.runIfLazyInitialized {
+            imgurClient.clearMemory()
+        }
     }
 }

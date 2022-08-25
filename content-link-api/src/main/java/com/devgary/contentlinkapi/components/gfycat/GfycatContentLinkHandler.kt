@@ -3,8 +3,10 @@ package com.devgary.contentlinkapi.components.gfycat
 import com.devgary.contentcore.model.content.components.ContentSource
 import com.devgary.contentcore.model.content.components.ContentType
 import com.devgary.contentcore.model.content.Content
+import com.devgary.contentcore.util.runIfLazyInitialized
 import com.devgary.contentlinkapi.components.gfycat.api.GfycatClient
 import com.devgary.contentlinkapi.components.gfycat.api.GfycatEndpoint
+import com.devgary.contentlinkapi.components.interfaces.ClearableMemory
 import com.devgary.contentlinkapi.content.ContentLinkException
 import com.devgary.contentlinkapi.content.ContentLinkHandler
 import com.devgary.contentlinkapi.util.LinkUtils
@@ -12,8 +14,8 @@ import com.devgary.contentlinkapi.util.LinkUtils
 class GfycatContentLinkHandler(
     private val clientId: String,
     private val clientSecret: String,
-) : ContentLinkHandler {
-    private val gfycatApi: GfycatClient by lazy { 
+) : ContentLinkHandler, ClearableMemory {
+    private val gfycatClient: GfycatClient by lazy { 
         GfycatClient(
             clientId = clientId, 
             clientSecret = clientSecret,
@@ -32,7 +34,7 @@ class GfycatContentLinkHandler(
             throw ContentLinkException("Could not parse GfycatName from url $url")
         }
         
-        val response = gfycatApi.getGfycat(gfycatName)
+        val response = gfycatClient.getGfycat(gfycatName)
         response.let {
             response.mp4Url?.let {
                 return Content(ContentSource.Url(it), ContentType.VIDEO)
@@ -44,4 +46,10 @@ class GfycatContentLinkHandler(
 
     private fun parseGfycatNameFromUrl(url: String): String? =
         LinkUtils.parseAlphabeticalIdFromUrl(url, "gfycat.com/")
+
+    override fun clearMemory() {
+        this::gfycatClient.runIfLazyInitialized {
+            gfycatClient.clearMemory()
+        }
+    }
 }
