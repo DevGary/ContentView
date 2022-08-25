@@ -3,14 +3,16 @@ package com.devgary.contentlinkapi.components.streamable
 import com.devgary.contentcore.model.content.components.ContentSource
 import com.devgary.contentcore.model.content.components.ContentType
 import com.devgary.contentcore.model.content.Content
+import com.devgary.contentcore.util.runIfLazyInitialized
+import com.devgary.contentlinkapi.components.interfaces.ClearableMemory
 import com.devgary.contentlinkapi.components.streamable.api.StreamableClient
 import com.devgary.contentlinkapi.components.streamable.api.StreamableEndpoint
 import com.devgary.contentlinkapi.content.ContentLinkException
 import com.devgary.contentlinkapi.content.ContentLinkHandler
 import com.devgary.contentlinkapi.util.LinkUtils
 
-class StreamableContentLinkHandler : ContentLinkHandler {
-    private val streamableApi: StreamableClient by lazy {
+class StreamableContentLinkHandler : ContentLinkHandler, ClearableMemory {
+    private val streamableClient: StreamableClient by lazy {
         StreamableClient(StreamableEndpoint.create())
     }
 
@@ -25,7 +27,7 @@ class StreamableContentLinkHandler : ContentLinkHandler {
             throw ContentLinkException("Could not parse Streamable shortcode from url $url")
         }
         
-        val response = streamableApi.getVideo(shortCodeFromUrl)
+        val response = streamableClient.getVideo(shortCodeFromUrl)
         response.let {
             val video = response.videos
                 .filter { v -> v.url.isNotEmpty() }
@@ -41,4 +43,10 @@ class StreamableContentLinkHandler : ContentLinkHandler {
 
     private fun parseShortcodeFromUrl(url: String): String? =
         LinkUtils.parseAlphanumericIdFromUrl(url, "streamable.com/")
+
+    override fun clearMemory() {
+        this::streamableClient.runIfLazyInitialized { 
+            streamableClient.clearMemory()
+        }
+    }
 }
