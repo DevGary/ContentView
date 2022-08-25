@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.devgary.contentcore.model.content.CollectionContent
 import com.devgary.contentview.databinding.CollectionContentViewBinding
 
+@com.devgary.contentcore.util.annotations.Experimental
 class CollectionContentView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
