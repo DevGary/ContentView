@@ -27,11 +27,8 @@ class CollectionContentViewAdapter(
 
     override fun getItemCount(): Int = contentCollection.size
 
-    inner class ContentViewHolder(private val binding: ItemLayoutContentViewPagerBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ContentViewHolder(val binding: ItemLayoutContentViewPagerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(content: Content) {
-            binding.contentview.apply {
-                showContent(content)
-            }
         }
     }
 }

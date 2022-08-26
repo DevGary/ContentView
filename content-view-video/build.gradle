@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.devgary.contentview.video.exomedia'
+    namespace 'com.devgary.contentview.video'
     compileSdk versions.compileSdk
 
     defaultConfig {
@@ -43,7 +43,10 @@ dependencies {
     implementation "androidx.core:core-ktx:$versions.androidKtx"
     implementation "com.google.android.material:material:$versions.material"
 
-    implementation "com.devbrackets.android:exomedia:$versions.exomedia"
+    implementation "androidx.media3:media3-exoplayer:$versions.exoplayer"
+    implementation "androidx.media3:media3-ui:$versions.exoplayer"
+    implementation "androidx.media3:media3-exoplayer-dash:$versions.exoplayer"
+    implementation "androidx.media3:media3-exoplayer-hls:$versions.exoplayer"
 
     testImplementation "junit:junit:$versions.junit4"
     androidTestImplementation "androidx.test.ext:junit:$versions.junitAndroidExt"
