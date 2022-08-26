@@ -27,4 +27,5 @@ ext.versions = [
         expresso                  : '3.4.0',
         mockk                     : '1.12.5',
         mockwebserver             : '4.10.0',
+        kotest                    : '5.4.2',
 ]

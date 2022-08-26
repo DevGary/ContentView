@@ -1,6 +1,7 @@
 package com.devgary.contentlinkapi.components.streamable.api
 
 import com.devgary.contentlinkapi.components.streamable.api.model.StreamableVideoResponse
+import io.kotest.matchers.shouldBe
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.*
@@ -54,7 +55,7 @@ internal class StreamableClientTest {
             @Test
             @DisplayName("Then url is valid")
             fun urlIsValid() {
-                Assertions.assertEquals(validUrl, response.url)
+                response.url shouldBe validUrl
             }
         }
 
@@ -79,13 +80,13 @@ internal class StreamableClientTest {
             @Test
             @DisplayName("Then url is valid")
             fun urlIsValid() {
-                Assertions.assertEquals(validUrl, response1.url)
+                response1.url shouldBe validUrl
             }
 
             @Test
             @DisplayName("Then responses match")
             fun responsesMatch() {
-                Assertions.assertEquals(response1, response2)
+                response1 shouldBe response2
             }
         }
     }

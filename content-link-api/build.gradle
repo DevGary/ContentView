@@ -61,6 +61,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-params:$versions.junit5"
     testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$versions.junit5"
 
+    testImplementation "io.kotest:kotest-assertions-core:$versions.kotest"
     testImplementation "io.mockk:mockk:$versions.mockk"
 
     testImplementation "com.squareup.okhttp3:mockwebserver:$versions.mockwebserver"
