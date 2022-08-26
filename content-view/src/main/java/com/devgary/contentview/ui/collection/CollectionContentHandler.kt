@@ -1,10 +1,10 @@
-package com.devgary.contentview.components.collection
+package com.devgary.contentview.ui.collection
 
 import android.content.Context
 import android.view.View
 import com.devgary.contentcore.model.content.CollectionContent
 import com.devgary.contentcore.model.content.Content
-import com.devgary.contentview.content.ContentHandler
+import com.devgary.contentview.ContentHandler
 
 class CollectionContentHandler(private val context: Context) : ContentHandler {
     private var collectionContentView: CollectionContentView? = null

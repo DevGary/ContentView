@@ -1,10 +1,12 @@
-package com.devgary.contentview.content
+package com.devgary.contentview.ui
 
 import android.content.Context
 import android.util.AttributeSet
-import com.devgary.contentview.components.collection.CollectionContentHandler
-import com.devgary.contentview.components.image.ImageContentHandler
-import com.devgary.contentview.components.video.VideoContentHandler
+import com.devgary.contentview.AbstractContentHandlerView
+import com.devgary.contentview.ContentHandler
+import com.devgary.contentview.ui.collection.CollectionContentHandler
+import com.devgary.contentview.image.ImageContentHandler
+import com.devgary.contentview.video.exomedia.VideoContentHandler
 
 class ContentView @JvmOverloads constructor(
     context: Context,

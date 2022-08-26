@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.devgary.contentview'
+    namespace 'com.devgary.contentview.image'
     compileSdk versions.compileSdk
 
     defaultConfig {
@@ -21,7 +21,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    
+
     buildFeatures {
         viewBinding = true
     }
@@ -36,15 +36,17 @@ android {
 }
 
 dependencies {
-    api project(path: ':content-core')
-    api project(path: ':content-view-core')
-    api project(path: ':content-view-image')
-    api project(path: ':content-view-video-exomedia')
+    implementation project(path: ':content-core')
+    implementation project(path: ':content-view-core')
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.core:core-ktx:$versions.androidKtx"
     implementation "com.google.android.material:material:$versions.material"
-    
+
+    implementation "com.github.bumptech.glide:glide:$versions.glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$versions.glide"
+    implementation "com.github.chrisbanes:PhotoView:$versions.photoview"
+
     testImplementation "junit:junit:$versions.junit4"
     androidTestImplementation "androidx.test.ext:junit:$versions.junitAndroidExt"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.expresso"

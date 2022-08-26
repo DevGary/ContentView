@@ -1,12 +1,10 @@
-package com.devgary.contentview.components.collection
+package com.devgary.contentview.ui.collection
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.devbrackets.android.exomedia.ui.widget.VideoView
 import com.devgary.contentcore.model.content.Content
-import com.devgary.contentview.R
 import com.devgary.contentview.databinding.ItemLayoutContentViewPagerBinding
 
 class CollectionContentViewAdapter(
@@ -33,9 +31,6 @@ class CollectionContentViewAdapter(
         fun bind(content: Content) {
             binding.contentview.apply {
                 showContent(content)
-
-                // TODO: Improve this with generic disposable interface and investigate potential memory leak
-                findViewById<VideoView>(R.id.videoview)?.setReleaseOnDetachFromWindow(false)
             }
         }
     }

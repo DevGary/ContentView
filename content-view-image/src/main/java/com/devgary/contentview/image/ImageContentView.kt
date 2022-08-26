@@ -1,4 +1,4 @@
-package com.devgary.contentview.components.image
+package com.devgary.contentview.image
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,7 +7,7 @@ import android.widget.FrameLayout
 import com.bumptech.glide.Glide
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.model.content.components.ContentSource
-import com.devgary.contentview.databinding.ImageContentViewBinding
+import com.devgary.contentview.image.databinding.ImageContentViewBinding
 
 class ImageContentView @JvmOverloads constructor(
     context: Context,
