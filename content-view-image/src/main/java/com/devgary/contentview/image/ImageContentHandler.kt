@@ -8,15 +8,11 @@ import com.devgary.contentview.ContentHandler
 
 class ImageContentHandler(private val context: Context) : ContentHandler {
     private var imageContentView: ImageContentView? = null
-  
-    private fun createView() {
-        if (imageContentView != null) return
-        imageContentView = ImageContentView(context = context)
-    }
 
-    override fun getView(): View {
-        createView()
-        return imageContentView!!
+    override fun getView(): ImageContentView {
+        return imageContentView ?: ImageContentView(context = context).also { 
+            imageContentView = it
+        }
     }
 
     override fun canShowContent(content: Content): Boolean {
@@ -31,7 +27,7 @@ class ImageContentHandler(private val context: Context) : ContentHandler {
     }
     
     override fun showContent(content: Content) {
-        createView()
+        getView()
         setViewVisibility(View.VISIBLE)
 
         imageContentView?.showContent(content)

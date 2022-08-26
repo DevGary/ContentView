@@ -8,15 +8,11 @@ import com.devgary.contentview.ContentHandler
 
 class CollectionContentHandler(private val context: Context) : ContentHandler {
     private var collectionContentView: CollectionContentView? = null
-  
-    private fun createView() {
-        if (collectionContentView != null) return
-        collectionContentView = CollectionContentView(context = context)
-    }
 
-    override fun getView(): View {
-        createView()
-        return collectionContentView!!
+    override fun getView(): CollectionContentView {
+        return collectionContentView ?: CollectionContentView(context = context).also { 
+            collectionContentView = it
+        }
     }
     
     override fun setViewVisibility(visibility: Int) {
@@ -28,7 +24,7 @@ class CollectionContentHandler(private val context: Context) : ContentHandler {
     }
     
     override fun showContent(content: Content) {
-        createView()
+        getView()
         setViewVisibility(View.VISIBLE)
 
         (content as CollectionContent).let {
