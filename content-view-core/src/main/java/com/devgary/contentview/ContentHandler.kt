@@ -1,4 +1,4 @@
-package com.devgary.contentview.content
+package com.devgary.contentview
 
 import android.view.View
 import com.devgary.contentcore.model.content.Content

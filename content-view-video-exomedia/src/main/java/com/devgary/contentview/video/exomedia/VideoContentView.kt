@@ -1,4 +1,4 @@
-package com.devgary.contentview.components.video
+package com.devgary.contentview.video.exomedia
 
 import android.content.Context
 import android.net.Uri
@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.FrameLayout
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.model.content.components.ContentSource
-import com.devgary.contentview.databinding.VideoContentViewBinding
+import com.devgary.contentview.video.exomedia.databinding.VideoContentViewBinding
 
 class VideoContentView @JvmOverloads constructor(
     context: Context,
@@ -18,7 +18,12 @@ class VideoContentView @JvmOverloads constructor(
     private val binding = VideoContentViewBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun showContent(content: Content) {
-        binding.videoview.apply { 
+        R.layout.video_content_view
+        binding.videoview.apply {
+
+            // TODO: Improve this with generic disposable interface and investigate potential memory leak
+            setReleaseOnDetachFromWindow(false)
+            
             setOnPreparedListener { 
                 this.start()
             }

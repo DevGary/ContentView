@@ -1,39 +1,39 @@
-package com.devgary.contentview.components.video
+package com.devgary.contentview.image
 
 import android.content.Context
 import android.view.View
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.model.content.components.ContentType.*
-import com.devgary.contentview.content.ContentHandler
+import com.devgary.contentview.ContentHandler
 
-class VideoContentHandler(private val context: Context) : ContentHandler {
-    private var videoContentView: VideoContentView? = null
+class ImageContentHandler(private val context: Context) : ContentHandler {
+    private var imageContentView: ImageContentView? = null
   
     private fun createView() {
-        if (videoContentView != null) return
-        videoContentView = VideoContentView(context = context)
+        if (imageContentView != null) return
+        imageContentView = ImageContentView(context = context)
     }
 
     override fun getView(): View {
         createView()
-        return videoContentView!!
+        return imageContentView!!
     }
 
     override fun canShowContent(content: Content): Boolean {
         return when (content.type) {
-            VIDEO -> true
+            IMAGE, GIF -> true
             else -> false
         }
     }
 
     override fun setViewVisibility(visibility: Int) {
-        videoContentView?.setViewVisibility(visibility)
+        imageContentView?.setViewVisibility(visibility)
     }
     
     override fun showContent(content: Content) {
         createView()
         setViewVisibility(View.VISIBLE)
 
-        videoContentView?.showContent(content)
+        imageContentView?.showContent(content)
     }
 }

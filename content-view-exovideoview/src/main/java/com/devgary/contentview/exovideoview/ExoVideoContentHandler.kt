@@ -1,4 +1,4 @@
-package com.devgary.contentview.components.image
+package com.devgary.contentview.exovideoview
 
 import android.content.Context
 import android.view.View
@@ -6,34 +6,34 @@ import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.model.content.components.ContentType.*
 import com.devgary.contentview.content.ContentHandler
 
-class ImageContentHandler(private val context: Context) : ContentHandler {
-    private var imageContentView: ImageContentView? = null
+class ExoVideoContentHandler(private val context: Context) : ContentHandler {
+    private var videoContentView: ExoVideoView? = null
   
     private fun createView() {
-        if (imageContentView != null) return
-        imageContentView = ImageContentView(context = context)
+        if (videoContentView != null) return
+        videoContentView = ExoVideoView(context = context)
     }
 
     override fun getView(): View {
         createView()
-        return imageContentView!!
+        return videoContentView!!
     }
 
     override fun canShowContent(content: Content): Boolean {
         return when (content.type) {
-            IMAGE, GIF -> true
+            VIDEO -> true
             else -> false
         }
     }
 
     override fun setViewVisibility(visibility: Int) {
-        imageContentView?.setViewVisibility(visibility)
+        videoContentView?.setViewVisibility(visibility)
     }
     
     override fun showContent(content: Content) {
         createView()
         setViewVisibility(View.VISIBLE)
 
-        imageContentView?.showContent(content)
+        videoContentView?.showContent(content)
     }
 }

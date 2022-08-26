@@ -1,4 +1,4 @@
-package com.devgary.contentview.content
+package com.devgary.contentview
 
 import android.content.Context
 import android.util.AttributeSet
