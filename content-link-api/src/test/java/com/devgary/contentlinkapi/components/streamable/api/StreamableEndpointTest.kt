@@ -4,11 +4,13 @@ import com.devgary.contentlinkapi.components.streamable.api.model.StreamableVide
 import com.devgary.contentlinkapi.util.GenericMockResponses
 import com.devgary.contentlinkapi.util.enqueue
 import com.squareup.moshi.JsonDataException
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.ints.shouldBeExactly
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.*
 
 class StreamableEndpointTest {
     private lateinit var endpoint: StreamableEndpoint
@@ -50,31 +52,31 @@ class StreamableEndpointTest {
             @Test
             @DisplayName("Then request path matches")
             fun requestPathMatches() {
-                assertEquals("/videos/$shortCode", request.path)
+                request.path shouldBe "/videos/$shortCode"
             }
             
             @Test
             @DisplayName("Then title matches")
             fun titleMatches() {
-                assertEquals("Gravity Rush 2 - Lunar Style World Traversal", response.title)
+                response.title shouldBe "Gravity Rush 2 - Lunar Style World Traversal"
             }
 
             @Test
             @DisplayName("Then number of video matches")
             fun videosSizeMatches() {
-                assertEquals(2, response.videos.size)
+                response.videos.size shouldBeExactly 2
             }
 
             @Test
             @DisplayName("Then mp4-mobile video exists")
             fun containsMp4MobileVideo() {
-                assertEquals(1, response.videos.count { video -> video.url == "//cdn-b-east.streamable.com/video/mp4-mobile/hn8hq.mp4?token=YDcwufloEg8_KL0vnx4b6A&expires=1591923000" })
+                response.videos.count { video -> video.url == "//cdn-b-east.streamable.com/video/mp4-mobile/hn8hq.mp4?token=YDcwufloEg8_KL0vnx4b6A&expires=1591923000" } shouldBe 1
             }
             
             @Test
             @DisplayName("Then mp4 video exists")
             fun containsMp4Video() {
-                assertEquals(1, response.videos.count { video -> video.url == "//cdn-b-east.streamable.com/video/mp4/hn8hq.mp4?token=EEioHptvKoLeACuujevHbQ&expires=1591923000" })
+                response.videos.count { video -> video.url == "//cdn-b-east.streamable.com/video/mp4/hn8hq.mp4?token=EEioHptvKoLeACuujevHbQ&expires=1591923000" } shouldBe 1
             }
         }
     }
@@ -83,8 +85,8 @@ class StreamableEndpointTest {
     @DisplayName("Given invalid json, When getVideo() called, Then throws JsonDataException")
     fun getVideoInvalid(): Unit = runBlocking {
         server.enqueue(GenericMockResponses.INVALID)
-        val exception = assertThrows<JsonDataException> {
-            val response = endpoint.getVideo("")
+        shouldThrow<JsonDataException> {
+            endpoint.getVideo("")
         }
     }
 }
