@@ -6,7 +6,7 @@ import com.devgary.contentview.AbstractContentHandlerView
 import com.devgary.contentview.ContentHandler
 import com.devgary.contentview.ui.collection.CollectionContentHandler
 import com.devgary.contentview.image.ImageContentHandler
-import com.devgary.contentview.video.exomedia.VideoContentHandler
+import com.devgary.contentview.video.VideoContentHandler
 
 class ContentView @JvmOverloads constructor(
     context: Context,
