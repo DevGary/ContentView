@@ -43,7 +43,6 @@ class CollectionContentView @JvmOverloads constructor(
                             contentViewHolder?.let {
                                 val contentview = it.binding.contentview
                                 if (i == selectedPosition) {
-                                    contentview.showContent(content.getCollection()[i])
                                     contentview.play()
                                 }
                                 else {
