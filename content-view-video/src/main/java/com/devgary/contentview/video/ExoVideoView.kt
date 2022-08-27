@@ -12,6 +12,7 @@ import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.model.content.components.ContentSource
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.name
+import com.devgary.contentcore.util.setHeight
 import com.devgary.contentview.video.databinding.ExoVideoViewBinding
 
 class ExoVideoView @JvmOverloads constructor(
@@ -85,13 +86,12 @@ class ExoVideoView @JvmOverloads constructor(
     private fun setVideoViewToWrapHeight() {
         binding.playerView.post {
             exoplayer?.videoFormat?.let {
-                val aspectRatio = it.pixelWidthHeightRatio
-                val params = layoutParams
-                
-                val height = (width * aspectRatio).toInt()
-                Log.v(TAG, "Setting video view height to $height")
-                params.height = height
-                layoutParams = params
+                if (it.width > 0 && it.height > 0) {
+                    val aspectRatio = it.width.toFloat() / it.height
+                    val height = (width / aspectRatio).toInt()
+                    Log.v(TAG, "Setting video view height to $height")
+                    setHeight(height)
+                }
             }
         }
     }
