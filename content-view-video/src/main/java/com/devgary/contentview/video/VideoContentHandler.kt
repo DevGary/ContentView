@@ -10,10 +10,15 @@ import com.devgary.contentview.interfaces.PlayPausable
 
 class VideoContentHandler(private val context: Context) : ContentHandler, Disposable, PlayPausable {
     private var videoContentView: ExoVideoView? = null
+    private var autoplay: Boolean? = null
   
     override fun getView(): ExoVideoView {
         return videoContentView ?: ExoVideoView(context = context).also { 
-            videoContentView = it
+            videoContentView = it.also { 
+                autoplay?.let { autoplay ->
+                    setAutoplay(autoplay)
+                }
+            }
         }
     }
 
@@ -45,5 +50,10 @@ class VideoContentHandler(private val context: Context) : ContentHandler, Dispos
 
     override fun pause() {
         videoContentView?.pause()
+    }
+
+    override fun setAutoplay(autoplay: Boolean) {
+        this.autoplay = autoplay
+        videoContentView?.setAutoplay(autoplay)
     }
 }
