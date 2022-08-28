@@ -30,6 +30,7 @@ class CollectionContentViewAdapter(
     inner class ContentViewHolder(val binding: ItemLayoutContentViewPagerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(content: Content) {
             binding.contentview.apply {
+                setAutoplay(false)
                 showContent(content)
             }
         }

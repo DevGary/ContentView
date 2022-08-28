@@ -87,4 +87,10 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
             (it as? PlayPausable)?.pause()
         }
     }
+
+    override fun setAutoplay(autoplay: Boolean) {
+        contentHandlers.forEach {
+            (it as? PlayPausable)?.setAutoplay(autoplay)
+        }
+    }
 }
