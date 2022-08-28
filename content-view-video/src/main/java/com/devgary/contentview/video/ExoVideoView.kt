@@ -24,11 +24,11 @@ class ExoVideoView @JvmOverloads constructor(
 
     private var content: Content? = null
     private var exoplayer: ExoPlayer? = null
-    private var playWhenReadyConfig: Boolean = true
+    private var autoplay: Boolean = true
 
     init {
         binding.playerView.setOnClickListener { 
-            playPause()
+            togglePlayPause()
         }
     }
     
@@ -41,7 +41,7 @@ class ExoVideoView @JvmOverloads constructor(
                     exoplayer.repeatMode = Player.REPEAT_MODE_ONE
                     binding.playerView.player = exoplayer
                     
-                    exoplayer.playWhenReady = playWhenReadyConfig
+                    exoplayer.playWhenReady = autoplay
                     exoplayer.prepare()
 
                     binding.playerView.visibility = GONE
@@ -109,17 +109,19 @@ class ExoVideoView @JvmOverloads constructor(
         this.visibility = visibility
     }
     
+    fun setAutoplay(autoplay: Boolean) {
+        this.autoplay = autoplay
+    }
+    
     fun play() {
-        playWhenReadyConfig = true
         exoplayer?.playWhenReady = true
     }
 
     fun pause() {
-        playWhenReadyConfig = false
         exoplayer?.playWhenReady = false
     }
     
-    private fun playPause() {
+    private fun togglePlayPause() {
         exoplayer?.let { 
             if (it.playWhenReady) pause() else play()
         }
