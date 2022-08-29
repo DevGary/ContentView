@@ -34,7 +34,7 @@ object LinkUtils {
             regexPattern = REGEX_PATTERN_NON_ALPHABETICAL
         )
         
-        return if (parsed.isNotNullOrBlank()) return parsed else return null
+        return if (parsed.isNotNullOrBlank()) parsed else null
     }    
     
     fun parseAlphanumericIdFromUrl(url: String, startFromOccurrence: String): String? {
@@ -44,6 +44,6 @@ object LinkUtils {
             regexPattern = REGEX_PATTERN_NON_ALPHANUMERIC
         )
 
-        return if (parsed.isNotNullOrBlank()) return parsed else return null
+        return if (parsed.isNotNullOrBlank()) parsed else null
     }
 }
