@@ -48,4 +48,5 @@ dependencies {
     testImplementation "junit:junit:$versions.junit4"
     androidTestImplementation "androidx.test.ext:junit:$versions.junitAndroidExt"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.expresso"
+    androidTestImplementation project(path: ':test-android-core')
 }

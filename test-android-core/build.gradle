@@ -1,0 +1,42 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.devgary.testandroidcore'
+    compileSdk versions.compileSdk
+
+    defaultConfig {
+        minSdk versions.minSdk
+        targetSdk versions.targetSdk
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    api project(path: ':test-core')
+
+    api ("com.adevinta.android:barista:$versions.barista") {
+        exclude group: 'org.jetbrains.kotlin'
+        exclude group: 'org.checkerframework'
+    }
+    api "org.hamcrest:hamcrest:$versions.hamcrest"
+}
