@@ -8,4 +8,4 @@ ContentView is a library to simplify loading content such as Images, Gifs, Video
 ![](demo.webp)
 
 # Status
-The library is still in **early** in development and I would not recommend using it in production, specifically the `ContentView` component.
+The library is still in **early** in development and I would not recommend using it in production, especially the `ContentView` component.
