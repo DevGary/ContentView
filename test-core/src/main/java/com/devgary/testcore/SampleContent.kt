@@ -1,5 +1,8 @@
-package com.devgary.contentviewdemo
+package com.devgary.testcore
 
+/**
+ * Sample Content used for testing.
+ */
 object SampleContent {
     val IMAGE_CONTENT = "https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png"
     val IMAGE_CONTENT_NO_EXTENSION = "https://images.unsplash.com/photo-1580860749755-f49eb5509d55?ixlib"

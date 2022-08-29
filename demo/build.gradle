@@ -59,6 +59,10 @@ dependencies {
     implementation project(path: ':content-core')
     implementation project(path: ':content-view')
     implementation project(path: ':content-link-api')
+    
+    // Using implementation as opposed to testImplementation as we need to access SampleContent file.
+    // It is not a big deal since this is just the demo module anyways
+    implementation project(path: ':test-core') 
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.core:core-ktx:$versions.androidKtx"
@@ -68,5 +72,5 @@ dependencies {
     
     testImplementation "junit:junit:$versions.junit4"
     androidTestImplementation "androidx.test.ext:junit:$versions.junitAndroidExt"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.expresso"
+    androidTestImplementation project(path: ':test-android-core')
 }

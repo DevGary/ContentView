@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.devgary.testcore.SampleContent
 import com.devgary.contentlinkapi.components.gfycat.GfycatContentLinkHandler
 import com.devgary.contentlinkapi.components.imgur.ImgurContentLinkHandler
 import com.devgary.contentlinkapi.components.streamable.StreamableContentLinkHandler
