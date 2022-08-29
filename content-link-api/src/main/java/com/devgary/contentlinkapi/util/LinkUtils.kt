@@ -1,5 +1,7 @@
 package com.devgary.contentlinkapi.util
 
+import com.devgary.contentcore.util.isNotNullOrBlank
+
 object LinkUtils {
     
     private const val REGEX_PATTERN_NON_ALPHABETICAL = "[^a-zA-Z]"
@@ -26,18 +28,22 @@ object LinkUtils {
     }
     
     fun parseAlphabeticalIdFromUrl(url: String, startFromOccurrence: String): String? {
-        return parseSegmentFromUrl(
+        val parsed = parseSegmentFromUrl(
             url = url, 
             startFromOccurrence = startFromOccurrence, 
             regexPattern = REGEX_PATTERN_NON_ALPHABETICAL
         )
+        
+        return if (parsed.isNotNullOrBlank()) return parsed else return null
     }    
     
     fun parseAlphanumericIdFromUrl(url: String, startFromOccurrence: String): String? {
-        return parseSegmentFromUrl(
+        val parsed = parseSegmentFromUrl(
             url = url, 
             startFromOccurrence = startFromOccurrence, 
             regexPattern = REGEX_PATTERN_NON_ALPHANUMERIC
         )
+
+        return if (parsed.isNotNullOrBlank()) return parsed else return null
     }
 }

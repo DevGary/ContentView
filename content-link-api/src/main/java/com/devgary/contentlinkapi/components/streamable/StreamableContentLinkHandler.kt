@@ -42,7 +42,7 @@ class StreamableContentLinkHandler : ContentLinkHandler, ClearableMemory {
     }
 
     private fun parseShortcodeFromUrl(url: String): String? =
-        LinkUtils.parseAlphanumericIdFromUrl(url, "streamable.com/")
+        StreamableLinkParser.parse(url).shortCode
 
     override fun clearMemory() {
         this::streamableClient.runIfLazyInitialized { 
