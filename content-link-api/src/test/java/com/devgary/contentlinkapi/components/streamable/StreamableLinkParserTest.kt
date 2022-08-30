@@ -1,17 +1,33 @@
 package com.devgary.contentlinkapi.components.streamable
 
+import com.devgary.testcore.SampleContent.STREAMABLE.BASIC_URL
+import com.devgary.testcore.SampleContent.STREAMABLE.HLS_URL
+import com.devgary.testcore.SampleContent.STREAMABLE.URL_S_SHORTCODE
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 internal class StreamableLinkParserTest {
-    @Test
+    companion object {
+        @JvmStatic
+        private fun streamableUrlWithShortcode(): List<Arguments> {
+            return listOf(
+                Arguments.of(BASIC_URL, "hwa6l"),
+                Arguments.of(URL_S_SHORTCODE, "hwa6l"),
+                Arguments.of(HLS_URL, null),
+            )
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("streamableUrlWithShortcode")
     @DisplayName("Given Streamable Url with Shortcode, When parse() called, Then Shortcode matches")
-    fun streamableUrlWithShortcode() {
-        val shortCode = "hn8hq"
-        val parsedResult = StreamableLinkParser.parse("streamable.com/$shortCode")
-        
-        parsedResult.shortCode shouldBe shortCode
+    fun streamableUrlWithShortcode(url: String, expectedShortcode: String?) {
+        val parsedResult = StreamableLinkParser.parse(url)
+        parsedResult.shortCode shouldBe expectedShortcode
     }
     
     @Test

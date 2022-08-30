@@ -71,7 +71,7 @@ class DemoActivity : AppCompatActivity() {
             R.id.menu_image_no_ext -> SampleContent.IMAGE_CONTENT_NO_EXTENSION
             R.id.menu_gif -> SampleContent.GIF_CONTENT
             R.id.menu_video -> SampleContent.MP4_VIDEO_CONTENT
-            R.id.menu_streamable -> SampleContent.STREAMABLE_URL
+            R.id.menu_streamable -> SampleContent.STREAMABLE.BASIC_URL 
             R.id.menu_gfycat_video -> SampleContent.GFYCAT_URL
             R.id.menu_imgur_album -> SampleContent.IMGUR_ALBUM_GALLERY_URL
             R.id.menu_clear_memory -> {

@@ -12,4 +12,10 @@ object SampleContent {
     val STREAMABLE_URL = "https://streamable.com/hwa6l"
     val GFYCAT_URL = "https://gfycat.com/foolishcompetentaegeancat-computer-working-laptop-work-cat"
     val IMGUR_ALBUM_GALLERY_URL = "https://imgur.com/gallery/EH7seB9"
+    
+    object STREAMABLE {
+        const val BASIC_URL = "https://streamable.com/hwa6l"
+        const val URL_S_SHORTCODE = "https://streamable.com/s/hwa6l/crqj"
+        const val HLS_URL = "https://streamable.com/m/kevin-gausman-in-play-run-s-to-mike-zunino"
+    }
 }
