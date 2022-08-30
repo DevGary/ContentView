@@ -1,9 +1,9 @@
 package com.devgary.contentlinkapi.util
 
+import android.net.Uri
 import com.devgary.contentcore.util.isNotNullOrBlank
 
 object LinkUtils {
-    
     private const val REGEX_PATTERN_NON_ALPHABETICAL = "[^a-zA-Z]"
     private const val REGEX_PATTERN_NON_ALPHANUMERIC = "[^a-zA-Z0-9]"
     
@@ -27,23 +27,43 @@ object LinkUtils {
         return segment
     }
     
-    fun parseAlphabeticalIdFromUrl(url: String, startFromOccurrence: String): String? {
+    fun parseAlphabeticalIdFromUrl(url: String, startFromOccurrence: String, minLength: Int? = null): String? {
         val parsed = parseSegmentFromUrl(
             url = url, 
             startFromOccurrence = startFromOccurrence, 
             regexPattern = REGEX_PATTERN_NON_ALPHABETICAL
         )
-        
-        return if (parsed.isNotNullOrBlank()) parsed else null
+
+        parsed?.let {
+            if (it.isNotNullOrBlank() && it.length >= (minLength ?: -1)) {
+                return parsed
+            }
+        }
+
+        return null
     }    
     
-    fun parseAlphanumericIdFromUrl(url: String, startFromOccurrence: String): String? {
+    fun parseAlphanumericIdFromUrl(url: String, startFromOccurrence: String, minLength: Int? = null): String? {
         val parsed = parseSegmentFromUrl(
             url = url, 
             startFromOccurrence = startFromOccurrence, 
             regexPattern = REGEX_PATTERN_NON_ALPHANUMERIC
         )
 
-        return if (parsed.isNotNullOrBlank()) parsed else null
+        parsed?.let { 
+            if (it.isNotNullOrBlank() && it.length >= (minLength ?: -1)) {
+                return parsed
+            }
+        }
+        
+        return null
+    }
+    
+    fun String?.parseDomainFromUrl(): String? {
+        return if (this.isNotNullOrBlank()) {
+            Uri.parse(this).host
+        } else {
+            null
+        }
     }
 }
