@@ -38,16 +38,20 @@ class CollectionContentView @JvmOverloads constructor(
                         for (i in 0..content.getCollection().size) {
                             val isPositionOfSelectionPrevious = i == selectedPosition - 1
                             val isPositionOfSelectionNext = i == selectedPosition + 1
+                            val isPositionOfSelection = i == selectedPosition
                             
                             val contentViewHolder = viewpagerRecyclerView.findViewHolderForAdapterPosition(i) as? CollectionContentViewAdapter.ContentViewHolder
                             contentViewHolder?.let {
                                 val contentview = it.binding.contentview
-                                if (i == selectedPosition) {
+                                if (isPositionOfSelection) {
                                     contentview.play()
+                                    contentview.showContent(content.getCollection()[i])
                                 }
                                 else {
                                     contentview.pause()
-                                    if (!isPositionOfSelectionPrevious && !isPositionOfSelectionNext) {
+                                    if (isPositionOfSelectionPrevious || isPositionOfSelectionNext) {
+                                        contentview.showContent(content.getCollection()[i])
+                                    } else {
                                         contentview.dispose()
                                     }
                                 }
