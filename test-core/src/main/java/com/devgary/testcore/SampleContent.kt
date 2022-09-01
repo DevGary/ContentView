@@ -9,7 +9,6 @@ object SampleContent {
     val GIF_CONTENT = "https://c.tenor.com/VVOA7SCKgmkAAAAM/test.gif"
     val MP4_VIDEO_CONTENT = "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_30MB.mp4"
     
-    val STREAMABLE_URL = "https://streamable.com/hwa6l"
     val GFYCAT_URL = "https://gfycat.com/foolishcompetentaegeancat-computer-working-laptop-work-cat"
     val IMGUR_ALBUM_GALLERY_URL = "https://imgur.com/gallery/EH7seB9"
     

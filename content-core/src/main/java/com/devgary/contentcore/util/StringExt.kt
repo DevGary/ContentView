@@ -15,3 +15,10 @@ fun String?.equalsIgnoreCase(value: String): Boolean {
 fun String.containsIgnoreCase(value: String): Boolean {
     return this.contains(value, ignoreCase = true)
 }
+
+/**
+ * Return null if string [isNullOrBlank], otherwise returns string
+ */
+fun String?.nullIfBlank(): String? {
+    return if (this.isNullOrBlank()) null else this
+}
