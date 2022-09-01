@@ -11,4 +11,6 @@ data class ImgurAlbum(
     val albumSize: Int,
     @Json(name = "images")
     var images: List<ImgurImage>,
+    @Json(name = "error")
+    var error: String?,
 )

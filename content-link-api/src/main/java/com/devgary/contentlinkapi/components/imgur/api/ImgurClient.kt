@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.collection.LruCache
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.name
+import com.devgary.contentcore.util.nullIfBlank
 import com.devgary.contentcore.util.runIfLazyInitialized
 import com.devgary.contentlinkapi.Constants
+import com.devgary.contentlinkapi.components.ApiException
 import com.devgary.contentlinkapi.components.imgur.api.model.ImgurAlbum
 
 class ImgurClient(private val imgurEndpoint: ImgurEndpoint) {
@@ -18,11 +20,15 @@ class ImgurClient(private val imgurEndpoint: ImgurEndpoint) {
             return it
         }
 
-        // TODO: Handle if status not success
-        imgurEndpoint.getImgurAlbum(albumId).album.also {
-            cachedAlbumResponses.put(albumId, it)
-            Log.i(TAG, "Returning network ${name<ImgurAlbum>()} for albumId = $albumId")
-            return it
+        imgurEndpoint.getImgurAlbum(albumId).also {
+            if (it.success && it.album.error.nullIfBlank() == null) {
+                cachedAlbumResponses.put(albumId, it.album)
+                Log.i(TAG, "Returning network ${name<ImgurAlbum>()} for albumId = $albumId")
+                return it.album
+            }
+            else {
+                throw ApiException(it.album.error.nullIfBlank())
+            }
         }
     }
 
