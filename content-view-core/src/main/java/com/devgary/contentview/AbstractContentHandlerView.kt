@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.FrameLayout
-import androidx.core.view.children
+import androidx.core.view.contains
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.classNameWithValue
@@ -64,8 +64,7 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
 
     private fun addContentHandlerViewIfNotAdded(handler: ContentHandler) {
         val contentHandlerView = handler.getView()
-        
-        if (!children.contains(contentHandlerView)) {
+        if (!contains(contentHandlerView)) {
             addView(contentHandlerView)
         }
     }
