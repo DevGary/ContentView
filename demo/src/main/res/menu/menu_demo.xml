@@ -2,9 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_clear_memory"
+        app:showAsAction="never"
+        android:title="Clear Memory">
+    </item>
+    
+    <item
         android:id="@+id/menu_image"
         app:showAsAction="never"
-        android:title="Image Url">
+        android:title="Image Url (Direct)">
     </item>
 
     <item
@@ -16,36 +22,36 @@
     <item
         android:id="@+id/menu_gif"
         app:showAsAction="never"
-        android:title="Gif Url">
+        android:title="Gif Url (Direct)">
     </item>
 
     <item
         android:id="@+id/menu_video"
         app:showAsAction="never"
-        android:title="Video Url">
+        android:title="Video Url (Direct)">
     </item>
 
     <item
         android:id="@+id/menu_streamable"
         app:showAsAction="never"
-        android:title="Streamable Url">
+        android:title="Streamable Url (API)">
+    </item>
+    
+    <item
+        android:id="@+id/menu_streamable_parse_webpage"
+        app:showAsAction="never"
+        android:title="Streamable Url (Parse Webpage)">
     </item>
     
     <item
         android:id="@+id/menu_gfycat_video"
         app:showAsAction="never"
-        android:title="Gfycat Url">
+        android:title="Gfycat Url (API)">
     </item>  
     
     <item
         android:id="@+id/menu_imgur_album"
         app:showAsAction="never"
-        android:title="Imgur Album Url">
-    </item>
-
-    <item
-        android:id="@+id/menu_clear_memory"
-        app:showAsAction="never"
-        android:title="Clear Memory">
+        android:title="Imgur Album Url (API)">
     </item>
 </menu>

@@ -2,11 +2,10 @@ package com.devgary.contentlinkapi.components.streamable.api
 
 import android.util.Log
 import androidx.collection.LruCache
-import com.devgary.contentcore.util.TAG
-import com.devgary.contentcore.util.name
-import com.devgary.contentcore.util.runIfLazyInitialized
+import com.devgary.contentcore.util.*
 import com.devgary.contentlinkapi.Constants
 import com.devgary.contentlinkapi.components.ApiException
+import com.devgary.contentlinkapi.components.webpageparser.WebpageParser
 import com.devgary.contentlinkapi.components.streamable.api.model.StreamableVideoResponse
 
 class StreamableClient(private val streamableEndpoint: StreamableEndpoint) {
@@ -30,7 +29,13 @@ class StreamableClient(private val streamableEndpoint: StreamableEndpoint) {
         cachedStreamableVideoResponses.put(shortCode, response)
         return response
     }
-    
+
+    suspend fun parseVideoUrlFromWebpage(url: String): String? {
+        val videoUrl = WebpageParser.parseVideoUrlFromWebpage(url)
+        
+        return videoUrl.nullIfBlank()
+    }
+
     fun clearMemory() {
         this::cachedStreamableVideoResponses.runIfLazyInitialized {
             Log.i(TAG,"Cleared ${cachedStreamableVideoResponses.size()} ${name<StreamableVideoResponse>()} from memory cache")
