@@ -8,9 +8,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.devgary.testcore.SampleContent
-import com.devgary.contentlinkapi.components.gfycat.GfycatContentLinkHandler
-import com.devgary.contentlinkapi.components.imgur.ImgurContentLinkHandler
-import com.devgary.contentlinkapi.components.streamable.StreamableContentLinkHandler
+import com.devgary.contentlinkapi.handlers.gfycat.GfycatContentLinkHandler
+import com.devgary.contentlinkapi.handlers.imgur.ImgurContentLinkHandler
+import com.devgary.contentlinkapi.handlers.streamable.StreamableContentLinkHandler
 import com.devgary.contentlinkapi.content.BaseContentLinkHandler
 import com.devgary.contentlinkapi.content.CompositeContentLinkHandler
 import com.devgary.contentlinkapi.content.ContentLinkHandler
@@ -27,7 +27,7 @@ class DemoActivity : AppCompatActivity() {
         object : BaseContentLinkHandler() {
             override fun provideContentHandlers(): List<ContentLinkHandler> {
                 return listOf(
-                    GfycatContentLinkHandler(
+                    com.devgary.contentlinkapi.handlers.gfycat.GfycatContentLinkHandler(
                         clientId = BuildConfig.GFYCAT_CLIENT_ID,
                         clientSecret = BuildConfig.GFYCAT_CLIENT_SECRET
                     ),
