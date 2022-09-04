@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.devgary.contentview.core'
+    namespace 'com.devgary.contentview'
     compileSdk versions.compileSdk
 
     defaultConfig {
@@ -21,6 +21,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    
+    buildFeatures {
+        viewBinding = true
+    }
+    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -31,13 +36,17 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':content-core')
+    api project(path: ':core:content-core')
+    api project(path: ':content-view:content-view-core')
+    api project(path: ':content-view:content-view-image')
+    api project(path: ':content-view:content-view-video')
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.core:core-ktx:$versions.androidKtx"
     implementation "com.google.android.material:material:$versions.material"
-
+    
     testImplementation "junit:junit:$versions.junit4"
     androidTestImplementation "androidx.test.ext:junit:$versions.junitAndroidExt"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.expresso"
+    androidTestImplementation project(path: ':core:test-android-core')
 }

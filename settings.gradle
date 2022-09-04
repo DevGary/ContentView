@@ -15,12 +15,15 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "ContentView"
+include ':core:content-core'
+include ':core:test-core'
+include ':core:test-android-core'
+
+include ':content-view:content-view'
+include ':content-view:content-view-core'
+include ':content-view:content-view-image'
+include ':content-view:content-view-video'
+
+include ':content-link-api:content-link-api'
+
 include ':demo'
-include ':content-view'
-include ':content-link-api'
-include ':content-core'
-include ':test-core'
-include ':content-view-core'
-include ':content-view-image'
-include ':content-view-video'
-include ':test-android-core'

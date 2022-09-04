@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-    api project(path: ':test-core')
+    api project(path: ':core:test-core')
 
     api ("com.adevinta.android:barista:$versions.barista") {
         exclude group: 'org.jetbrains.kotlin'
