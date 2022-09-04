@@ -13,7 +13,7 @@ jobs:
         run: chmod +x ./gradlew
         
       - name: Cache Resources
-      - uses: actions/cache@v3.0.8
+        uses: actions/cache@v3.0.8
         with:
           path: |
               ~/.gradle/caches
