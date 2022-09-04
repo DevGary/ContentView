@@ -1,5 +1,6 @@
 package com.devgary.contentlinkapi.components.streamable
 
+import com.devgary.contentlinkapi.handlers.streamable.StreamableLinkParser
 import com.devgary.testcore.SampleContent.STREAMABLE.BASIC_URL
 import com.devgary.testcore.SampleContent.STREAMABLE.HLS_URL
 import com.devgary.testcore.SampleContent.STREAMABLE.URL_S_SHORTCODE
