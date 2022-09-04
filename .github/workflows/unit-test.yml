@@ -11,16 +11,6 @@ jobs:
         
       - name: Change Gradle Wrapper Permissions
         run: chmod +x ./gradlew
-    
-      - name: Cache Resources
-      - uses: actions/cache@v2
-        with:
-          path: |
-              ~/.gradle/caches
-              ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-              ${{ runner.os }}-gradle-
         
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
