@@ -1,6 +1,6 @@
-package com.devgary.contentlinkapi.components.streamable.api
+package com.devgary.contentlinkapi.handlers.streamable.api
 
-import com.devgary.contentlinkapi.components.streamable.api.model.StreamableVideoResponse
+import com.devgary.contentlinkapi.handlers.streamable.api.model.StreamableVideoResponse
 import io.kotest.matchers.shouldBe
 import io.mockk.*
 import kotlinx.coroutines.runBlocking

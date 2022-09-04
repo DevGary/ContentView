@@ -4,7 +4,7 @@ import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.model.content.components.ContentSource
 import com.devgary.contentcore.model.content.components.ContentType
 import com.devgary.contentcore.util.containsIgnoreCase
-import com.devgary.contentlinkapi.components.FallthroughContentLinkHandler
+import com.devgary.contentlinkapi.handlers.FallthroughContentLinkHandler
 import com.devgary.contentlinkapi.content.ContentLinkHandler
 
 /**

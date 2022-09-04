@@ -5,7 +5,7 @@ import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.util.logExecutedFunction
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.name
-import com.devgary.contentlinkapi.components.interfaces.ClearableMemory
+import com.devgary.contentlinkapi.handlers.interfaces.ClearableMemory
 
 abstract class BaseContentLinkHandler : CompositeContentLinkHandler {
     private val contentHandlers = mutableListOf<ContentLinkHandler>()

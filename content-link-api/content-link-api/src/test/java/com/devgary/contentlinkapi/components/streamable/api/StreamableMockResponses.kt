@@ -1,4 +1,4 @@
-package com.devgary.contentlinkapi.components.streamable.api
+package com.devgary.contentlinkapi.handlers.streamable.api
 
 object StreamableMockResponses {
     object GetVideo {
