@@ -8,10 +8,23 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v1
+        
       - name: Change Gradle Wrapper Permissions
         run: chmod +x ./gradlew
+    
+      - name: Cache Resources
+      - uses: actions/cache@v2
+        with:
+          path: |
+              ~/.gradle/caches
+              ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+              ${{ runner.os }}-gradle-
+        
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
+        
       - name: Print Test Report Summary
         uses: asadmansr/android-test-report-action@v1.2.0
         if: always() # always run even if the previous step fails
