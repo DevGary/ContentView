@@ -9,7 +9,7 @@ import com.devgary.contentview.databinding.ItemLayoutContentViewPagerBinding
 
 class CollectionContentViewAdapter(
     private val context: Context,
-    private val contentCollection: List<Content>,
+    val contentCollection: List<Content>,
 ) : RecyclerView.Adapter<CollectionContentViewAdapter.ContentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder =
