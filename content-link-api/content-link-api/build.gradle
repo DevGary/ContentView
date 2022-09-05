@@ -1,0 +1,90 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'de.mannodermaus.android-junit5'
+    id 'maven-publish'
+}
+
+android {
+    namespace 'com.devgary.contentlinkapi'
+    compileSdk versions.compileSdk
+
+    defaultConfig {
+        minSdk versions.minSdk
+        targetSdk versions.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+    publishing {
+        singleVariant("release") {
+            // if you don't want sources/javadoc, remove these lines
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+}
+
+dependencies {
+    implementation project(path: ':core:content-core')
+
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+    implementation "androidx.core:core-ktx:$versions.androidKtx"
+    implementation "com.google.android.material:material:$versions.material"
+
+    implementation "com.squareup.moshi:moshi:$versions.moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$versions.moshi"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$versions.moshi"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofitMoshi"
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+
+    testImplementation project(path: ':core:test-core')
+
+    testImplementation "junit:junit:$versions.junit4"
+    androidTestImplementation "androidx.test.ext:junit:$versions.junitAndroidExt"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.expresso"
+
+    // Junit 5
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$versions.junit5"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$versions.junit5"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$versions.junit5"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$versions.junit5"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$versions.junit5"
+
+    testImplementation "io.kotest:kotest-assertions-core:$versions.kotest"
+    testImplementation "io.mockk:mockk:$versions.mockk"
+
+    testImplementation "com.squareup.okhttp3:mockwebserver:$versions.mockwebserver"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId 'com.github.devgary'
+                artifactId 'content-link-api'
+                version = "$versions.libVersion"
+            }
+        }
+    }
+}

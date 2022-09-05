@@ -10,7 +10,20 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
+        jcenter()
     }
 }
-rootProject.name = "Content View Demo"
+rootProject.name = "ContentView"
+include ':core:content-core'
+include ':core:test-core'
+include ':core:test-android-core'
+
+include ':content-view:content-view'
+include ':content-view:content-view-core'
+include ':content-view:content-view-image'
+include ':content-view:content-view-video'
+
+include ':content-link-api:content-link-api'
+
 include ':demo'

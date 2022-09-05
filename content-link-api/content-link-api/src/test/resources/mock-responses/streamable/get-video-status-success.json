@@ -1,0 +1,40 @@
+{
+  "status": 2,
+  "percent": 100,
+  "url": "streamable.com/hn8hq",
+  "embed_code": "<div style=\\\"width: 100%; height: 0px;\nposition: relative; padding-bottom: 56.25%;\\\"><iframe\nclass=\\\"streamable-embed\\\"\nsrc=\\\"https://streamable.com/o/hn8hq\\\"\nframeborder=\\\"0\\\" scrolling=\\\"no\\\" style=\\\"width: 100%;\nheight: 100%; position: absolute;\\\" allowfullscreen>\n</iframe></div>",
+  "message": null,
+  "files": {
+    "mp4": {
+      "status": 2,
+      "url": "//cdn-b-east.streamable.com/video/mp4/hn8hq.mp4?token=EEioHptvKoLeACuujevHbQ&expires=1591923000",
+      "framerate": 30,
+      "height": 720,
+      "width": 1280,
+      "bitrate": 4607887,
+      "size": 14230108,
+      "duration": 24.002
+    },
+    "mp4-mobile": {
+      "status": 2,
+      "url": "//cdn-b-east.streamable.com/video/mp4-mobile/hn8hq.mp4?token=YDcwufloEg8_KL0vnx4b6A&expires=1591923000",
+      "framerate": 30,
+      "height": 360,
+      "width": 640,
+      "bitrate": 1510573,
+      "size": 4746054,
+      "duration": 24.002
+    },
+    "original": {
+      "framerate": 29.97002997002997,
+      "bitrate": 10794301,
+      "size": 32763252,
+      "duration": 23.990633,
+      "height": 1080,
+      "width": 1920
+    }
+  },
+  "thumbnail_url": "//thumbs-east.streamable.com/image/hn8hq.jpg?height=300",
+  "title": "Gravity Rush 2 - Lunar Style World Traversal",
+  "source": null
+}
