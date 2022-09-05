@@ -16,4 +16,4 @@ implementation "com.github.DevGary.ContentView:content-view:<version>"
 See [Releases](https://github.com/DevGary/ContentView/releases) for versions
 
 # Status
-The library is still in **early** in development and I would not recommend using it in production, especially the `ContentView` component.
+The library is still in **early** development and I would not recommend using it in production, especially the `ContentView` component.
