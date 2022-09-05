@@ -36,8 +36,8 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':core:content-core')
-    implementation project(path: ':content-view:content-view-core')
+    api project(path: ':core:content-core')
+    api project(path: ':content-view:content-view-core')
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.core:core-ktx:$versions.androidKtx"

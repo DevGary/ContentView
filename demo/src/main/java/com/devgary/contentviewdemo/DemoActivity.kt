@@ -27,7 +27,7 @@ class DemoActivity : AppCompatActivity() {
         object : BaseContentLinkHandler() {
             override fun provideContentHandlers(): List<ContentLinkHandler> {
                 return listOf(
-                    com.devgary.contentlinkapi.handlers.gfycat.GfycatContentLinkHandler(
+                    GfycatContentLinkHandler(
                         clientId = BuildConfig.GFYCAT_CLIENT_ID,
                         clientSecret = BuildConfig.GFYCAT_CLIENT_SECRET
                     ),
