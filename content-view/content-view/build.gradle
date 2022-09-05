@@ -50,3 +50,16 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.expresso"
     androidTestImplementation project(path: ':core:test-android-core')
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId 'com.github.devgary'
+                artifactId 'content-view'
+                version = "$versions.libVersion"
+            }
+        }
+    }
+}
