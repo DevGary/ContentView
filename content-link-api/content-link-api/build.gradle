@@ -82,8 +82,8 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId 'com.github.devgary'
-                artifactId 'contentlinkapi'
-                version = "$versions.contentLinkApiVersion"
+                artifactId 'content-link-api'
+                version = "$versions.libVersion"
             }
         }
     }

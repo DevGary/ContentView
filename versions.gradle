@@ -3,7 +3,7 @@ ext.versions = [
         targetSdk:                33,
         compileSdk:               33,
         
-        contentLinkApiVersion     : "0.1",
+        libVersion                : "0.1.1",
 
         ktReflect                 : '1.7.10',
         
