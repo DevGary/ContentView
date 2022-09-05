@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
 
 android {
@@ -36,8 +37,8 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':core:content-core')
-    implementation project(path: ':content-view:content-view-core')
+    api project(path: ':core:content-core')
+    api project(path: ':content-view:content-view-core')
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.core:core-ktx:$versions.androidKtx"
@@ -50,4 +51,17 @@ dependencies {
     testImplementation "junit:junit:$versions.junit4"
     androidTestImplementation "androidx.test.ext:junit:$versions.junitAndroidExt"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.expresso"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId 'com.github.devgary'
+                artifactId 'content-view-image'
+                version = "$versions.libVersion"
+            }
+        }
+    }
 }

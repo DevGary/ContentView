@@ -34,18 +34,10 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
-
-    publishing {
-        singleVariant("release") {
-            // if you don't want sources/javadoc, remove these lines
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
 }
 
 dependencies {
-    implementation project(path: ':core:content-core')
+    api project(path: ':core:content-core')
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.core:core-ktx:$versions.androidKtx"
