@@ -3,6 +3,8 @@ ext.versions = [
         targetSdk:                33,
         compileSdk:               33,
         
+        contentLinkApiVersion     : "0.1",
+
         ktReflect                 : '1.7.10',
         
         appcompat                 : '1.5.0',
