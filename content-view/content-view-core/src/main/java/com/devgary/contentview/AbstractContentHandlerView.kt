@@ -1,6 +1,8 @@
 package com.devgary.contentview
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.FrameLayout
@@ -19,6 +21,7 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr), ContentHandler, Disposable, PlayPausable {
 
     private val contentHandlers = mutableListOf<ContentHandler>()
+    private var lastUsedHandler: ContentHandler? = null
 
     init {
         registerContentHandlers()
@@ -48,11 +51,14 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
         val firstContentHandlerForContent = contentHandlers.firstOrNull { handler ->
             handler.canShowContent(content)
         }
+
+        lastUsedHandler = null
         setContentHandlersVisibility(GONE, excludedContentHandler = firstContentHandlerForContent)
 
         firstContentHandlerForContent?.let { handler ->
             addContentHandlerViewIfNotAdded(handler)
             handler.showContent(content) 
+            lastUsedHandler = handler
         } ?: run { 
             Log.e(TAG, "No ${name<ContentHandler>()} found for ${classNameWithValue(content)}") 
         }
@@ -90,6 +96,63 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
     override fun setAutoplay(autoplay: Boolean) {
         contentHandlers.forEach {
             (it as? PlayPausable)?.setAutoplay(autoplay)
+        }
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        val state = super.onSaveInstanceState()
+        
+        state?.let {
+            val savedState = SavedState(it)
+            savedState.positionOfLastUsedContentHandler = contentHandlers.indexOf(lastUsedHandler)
+            return savedState
+        }
+        
+        return state
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if (state is SavedState) {
+            super.onRestoreInstanceState(state.superState)
+            contentHandlers.getOrNull(state.positionOfLastUsedContentHandler)?.let {
+                // In onRestoreInstanceState(), immediately add back the view that was
+                // being used to display content. Otherwise, since the ContentHandlerViews
+                // are lazily created, there is a risk that when onRestoreInstanceState()
+                // is propagated throughout the views, it is missed by the ContentHandlerView
+                // since it has not been created back yet and its state is not restored
+                addContentHandlerViewIfNotAdded(it)
+            }
+        } else {
+            super.onRestoreInstanceState(state)
+        }
+    }
+    
+    internal class SavedState : BaseSavedState {
+        // TODO: Use better way of tracking which ContentHandler used than position
+        var positionOfLastUsedContentHandler = -1
+
+        constructor(source: Parcel) : super(source) {
+            positionOfLastUsedContentHandler = source.readInt()
+        }
+
+        constructor(superState: Parcelable) : super(superState)
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeInt(positionOfLastUsedContentHandler)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR = object : Parcelable.Creator<SavedState> {
+                override fun createFromParcel(source: Parcel): SavedState {
+                    return SavedState(source)
+                }
+
+                override fun newArray(size: Int): Array<SavedState?> {
+                    return arrayOfNulls(size)
+                }
+            }
         }
     }
 }
