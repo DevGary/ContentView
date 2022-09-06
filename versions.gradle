@@ -12,6 +12,7 @@ ext.versions = [
         constraintlayout          : '2.1.4',
         exoplayer                 : '1.0.0-beta02',
         material                  : '1.6.1',
+        navigation                : '2.5.1',
         viewpager2                : '1.0.0',
         recyclerview              : '1.1.0',
         lifecycle                 : '2.5.1',

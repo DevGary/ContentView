@@ -67,8 +67,9 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.core:core-ktx:$versions.androidKtx"
     implementation "com.google.android.material:material:$versions.material"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle"
+    implementation "androidx.navigation:navigation-fragment-ktx:$versions.navigation"
     
     testImplementation "junit:junit:$versions.junit4"
     androidTestImplementation "androidx.test.ext:junit:$versions.junitAndroidExt"
