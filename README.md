@@ -9,6 +9,12 @@ ContentView is a library to simplify loading content such as Images, Gifs, Video
 
 # Instructions
 ```gradle
+repositories {
+  maven { url 'https://jitpack.io' }
+}
+```
+
+```gradle
 implementation "com.github.DevGary.ContentView:content-link-api:<version>"
 implementation "com.github.DevGary.ContentView:content-view:<version>"
 ```
