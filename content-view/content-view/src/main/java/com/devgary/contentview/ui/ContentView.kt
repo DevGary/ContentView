@@ -2,7 +2,7 @@ package com.devgary.contentview.ui
 
 import android.content.Context
 import android.util.AttributeSet
-import com.devgary.contentview.AbstractContentHandlerView
+import com.devgary.contentview.AbstractCompositeContentHandlerView
 import com.devgary.contentview.ContentHandler
 import com.devgary.contentview.ui.collection.CollectionContentHandler
 import com.devgary.contentview.image.ImageContentHandler
@@ -12,7 +12,7 @@ class ContentView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : AbstractContentHandlerView(context, attrs, defStyleAttr) {
+) : AbstractCompositeContentHandlerView(context, attrs, defStyleAttr) {
     override fun provideContentHandlers(): List<ContentHandler> {
         return listOf(
             ImageContentHandler(context),

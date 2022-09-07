@@ -78,7 +78,7 @@ class DemoFragment : Fragment(), MenuProvider {
     }
     
     private fun initViewModel() {
-        demoViewModel.content.observe(viewLifecycleOwner) {
+        demoViewModel.content.observe(viewLifecycleOwner) { 
             binding.contentview.showContent(it)
         }
 

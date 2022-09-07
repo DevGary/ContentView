@@ -2,7 +2,7 @@ package com.devgary.contentviewdemo
 
 import androidx.lifecycle.*
 import com.devgary.contentcore.model.content.Content
-import com.devgary.contentlinkapi.content.BaseContentLinkHandler
+import com.devgary.contentlinkapi.content.AbstractCompositeContentLinkHandler
 import com.devgary.contentlinkapi.content.CompositeContentLinkHandler
 import com.devgary.contentlinkapi.content.ContentLinkHandler
 import com.devgary.contentlinkapi.handlers.gfycat.GfycatContentLinkHandler
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class DemoViewModel : ViewModel() {
     private val contentLinkHandler: CompositeContentLinkHandler by lazy {
-        object : BaseContentLinkHandler() {
+        object : AbstractCompositeContentLinkHandler() {
             override fun provideContentHandlers(): List<ContentLinkHandler> {
                 return listOf(
                     GfycatContentLinkHandler(

@@ -14,7 +14,7 @@ import com.devgary.contentcore.util.name
 import com.devgary.contentview.interfaces.Disposable
 import com.devgary.contentview.interfaces.PlayPausable
 
-abstract class AbstractContentHandlerView @JvmOverloads constructor(
+abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
