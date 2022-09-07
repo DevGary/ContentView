@@ -7,6 +7,13 @@ ContentView is a library to simplify loading content such as Images, Gifs, Video
 
 ![](demo.webp)
 
+# Code Structure
+Both `ContentLinkHandler` and `ContentView` follow a similar structure. 
+
+Content Link Handlers must implement the `ContentLinkHandler` interface that contains a function that returns whether the `ContentLinkHandler` can handle a certain `url` and another function that converts the `url` into a `Content` item, usually by making some sort of HTTP Request. Then, all the individual `ContentLinkHandlers` (eg `StreamableContentLinkHandler`, `ImgurContentLinkHandler`) are combined using `AbstractCompositeContentLinkHandler` which itself implements the same `ContentLinkHandler` interface but handles content links using the individual `ContentLinkHandlers`.
+
+Similarily, Content Views must implement the `ContentHandler` interface that contains a function that returns whether the `ContentHandler` can show some `Content` and  another function that shows the `Content` on a View. Then, all the individual `ContentHandlers` (eg `ImageContentHandler`, `VideoContentHandler`) are combined using `AbstractCompositeContentHandlerView` which itself implements the same `ContentHandler` interface but handles content using the individual `ContentHandlers`.
+
 # Instructions
 ```gradle
 repositories {
