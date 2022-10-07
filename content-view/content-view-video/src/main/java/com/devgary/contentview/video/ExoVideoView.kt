@@ -80,6 +80,22 @@ class ExoVideoView @JvmOverloads constructor(
     }
 
     private fun onPlaybackReady() {
+        if (this.measuredHeight < 10) {
+            setVideoViewToWrapHeight()
+        }
+    }
+
+    private fun setVideoViewToWrapHeight() {
+        binding.playerView.post {
+            exoplayer?.videoFormat?.let {
+                if (it.width > 0 && it.height > 0) {
+                    val aspectRatio = it.width.toFloat() / it.height
+                    val height = (width / aspectRatio).toInt()
+                    Log.v(TAG, "Setting video view height to $height")
+                    setHeight(height)
+                }
+            }
+        }
     }
 
     fun releasePlayer() {
