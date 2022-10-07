@@ -1,4 +1,4 @@
-package com.devgary.contentviewdemo
+package com.devgary.contentviewdemo.screens.basic
 
 import androidx.lifecycle.*
 import com.devgary.contentcore.model.content.Content
@@ -8,13 +8,15 @@ import com.devgary.contentlinkapi.content.ContentLinkHandler
 import com.devgary.contentlinkapi.handlers.gfycat.GfycatContentLinkHandler
 import com.devgary.contentlinkapi.handlers.imgur.ImgurContentLinkHandler
 import com.devgary.contentlinkapi.handlers.streamable.StreamableContentLinkHandler
+import com.devgary.contentviewdemo.BuildConfig
+import com.devgary.contentviewdemo.DemoFallthroughContentLinkHandler
 import com.devgary.contentviewdemo.util.cancel
 import com.devgary.testcore.SampleContent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class DemoViewModel : ViewModel() {
+class BasicViewModel : ViewModel() {
     private val contentLinkHandler: CompositeContentLinkHandler by lazy {
         object : AbstractCompositeContentLinkHandler() {
             override fun provideContentHandlers(): List<ContentLinkHandler> {

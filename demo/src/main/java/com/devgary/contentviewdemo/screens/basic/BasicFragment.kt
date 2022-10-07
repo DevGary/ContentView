@@ -1,4 +1,4 @@
-package com.devgary.contentviewdemo.util
+package com.devgary.contentviewdemo.screens.basic
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,17 +10,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.name
-import com.devgary.contentviewdemo.DemoViewModel
 import com.devgary.contentviewdemo.R
-import com.devgary.contentviewdemo.databinding.FragmentDemoBinding
+import com.devgary.contentviewdemo.databinding.FragmentBasicBinding
 import com.devgary.testcore.SampleContent
 
-class DemoFragment : Fragment(), MenuProvider {
-    private val demoViewModel: DemoViewModel by lazy {
-        ViewModelProvider(this).get(DemoViewModel::class.java)
+class BasicFragment : Fragment(), MenuProvider {
+    private val basicViewModel: BasicViewModel by lazy {
+        ViewModelProvider(this).get(BasicViewModel::class.java)
     }
     
-    private var _binding: FragmentDemoBinding? = null
+    private var _binding: FragmentBasicBinding? = null
 
     /**
      * This property is only valid between [onCreateView] and [onDestroyView]
@@ -32,7 +31,7 @@ class DemoFragment : Fragment(), MenuProvider {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDemoBinding.inflate(inflater, container, false)
+        _binding = FragmentBasicBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -67,22 +66,22 @@ class DemoFragment : Fragment(), MenuProvider {
             R.id.menu_gfycat_video -> SampleContent.GFYCAT_URL
             R.id.menu_imgur_album -> SampleContent.IMGUR_ALBUM_GALLERY_URL
             R.id.menu_clear_memory -> {
-                demoViewModel.clearMemory()
+                basicViewModel.clearMemory()
                 return true
             }
             else -> return false
         }.let { url ->
-            demoViewModel.loadContent(url)
+            basicViewModel.loadContent(url)
             return true
         }
     }
     
     private fun initViewModel() {
-        demoViewModel.content.observe(viewLifecycleOwner) { 
+        basicViewModel.content.observe(viewLifecycleOwner) { 
             binding.contentview.showContent(it)
         }
 
-        demoViewModel.error.observe(viewLifecycleOwner) {
+        basicViewModel.error.observe(viewLifecycleOwner) {
             Toast.makeText(
                 /* context = */ context,
                 /* text = */ "Error: $it",
