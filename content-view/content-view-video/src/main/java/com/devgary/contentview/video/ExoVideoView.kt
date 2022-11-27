@@ -13,6 +13,8 @@ import com.devgary.contentcore.model.content.components.ContentSource
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.name
 import com.devgary.contentcore.util.setHeight
+import com.devgary.contentcore.util.setWidth
+import com.devgary.contentview.model.ScaleType
 import com.devgary.contentview.video.databinding.ExoVideoViewBinding
 
 class ExoVideoView @JvmOverloads constructor(
@@ -22,6 +24,8 @@ class ExoVideoView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
     private val binding = ExoVideoViewBinding.inflate(LayoutInflater.from(context), this, true)
 
+    var scaleType: ScaleType? = null
+    
     private var content: Content? = null
     private var exoplayer: ExoPlayer? = null
     private var autoplay: Boolean = true
@@ -80,17 +84,31 @@ class ExoVideoView @JvmOverloads constructor(
     }
 
     private fun onPlaybackReady() {
-        setVideoViewToWrapHeight()
+        if (scaleType == ScaleType.FILL_WIDTH) {
+            setVideoViewToWrapHeight()
+        }
     }
 
     private fun setVideoViewToWrapHeight() {
         binding.playerView.post {
             exoplayer?.videoFormat?.let {
                 if (it.width > 0 && it.height > 0) {
-                    val aspectRatio = it.width.toFloat() / it.height
-                    val height = (width / aspectRatio).toInt()
-                    Log.v(TAG, "Setting video view height to $height")
-                    setHeight(height)
+                    when (scaleType) {
+                        ScaleType.FILL_WIDTH -> {
+                            val aspectRatio = it.width.toFloat() / it.height
+                            val height = (width / aspectRatio).toInt()
+                            Log.v(TAG, "Setting video view height to $height")
+                            setHeight(height)
+                        }
+                        ScaleType.FIT_CENTER -> {
+                            val aspectRatio = it.width.toFloat() / it.height
+                            val width = (measuredHeight * aspectRatio).toInt()
+                            Log.v(TAG, "Setting video view width to $height based on measuredHeight = $measuredHeight and aspectRatio=$aspectRatio")
+                            setWidth(width)
+                        }
+                        null -> {}
+                    }
+   
                 }
             }
         }

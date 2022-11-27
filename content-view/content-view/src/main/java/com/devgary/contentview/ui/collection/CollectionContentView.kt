@@ -12,6 +12,7 @@ import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.util.setHeight
 import com.devgary.contentcore.util.waitForLayout
 import com.devgary.contentview.databinding.CollectionContentViewBinding
+import com.devgary.contentview.model.ScaleType
 
 @com.devgary.contentcore.util.annotations.Experimental
 class CollectionContentView @JvmOverloads constructor(
@@ -20,6 +21,9 @@ class CollectionContentView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : FrameLayout(context, attrs, defStyleAttr) {
     private val binding = CollectionContentViewBinding.inflate(LayoutInflater.from(context), this, true)
+    
+    var scaleType: ScaleType? = null
+    
     private var pagerAdapter: CollectionContentViewAdapter? = null
     /**
      * Cache of the height of ContentView for Content item in CollectionContent.
@@ -56,7 +60,10 @@ class CollectionContentView @JvmOverloads constructor(
                                 val contentview = it.binding.contentview
                                 val contentItem = content.getCollection()[i]
                                 if (isPositionOfSelection) {
-                                    wrapViewpagerHeight(contentViewHolder)
+                                    if (scaleType == ScaleType.FILL_WIDTH) {
+                                        wrapViewpagerHeight(contentViewHolder)
+                                    }
+                                    
                                     contentview.play()
                                     contentview.showContent(contentItem)
                                 }
