@@ -13,6 +13,7 @@ import com.devgary.contentcore.util.classNameWithValue
 import com.devgary.contentcore.util.name
 import com.devgary.contentview.interfaces.Disposable
 import com.devgary.contentview.interfaces.PlayPausable
+import com.devgary.contentview.model.ScaleType
 
 abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     context: Context,
@@ -25,6 +26,7 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
 
     init {
         registerContentHandlers()
+        setViewScaleType(ScaleType.FILL_WIDTH)
     }
 
     private fun registerContentHandlers() {
@@ -45,6 +47,11 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
         contentHandlers
             .filter { handler -> handler != excludedContentHandler }
             .forEach { handler -> handler.setViewVisibility(visibility) }
+    }
+
+    final override fun setViewScaleType(scaleType: ScaleType) {
+        contentHandlers
+            .forEach { handler -> handler.setViewScaleType(scaleType) }
     }
 
     override fun showContent(content: Content) {

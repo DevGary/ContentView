@@ -7,10 +7,12 @@ import com.devgary.contentcore.model.content.components.ContentType
 import com.devgary.contentview.ContentHandler
 import com.devgary.contentview.interfaces.Disposable
 import com.devgary.contentview.interfaces.PlayPausable
+import com.devgary.contentview.model.ScaleType
 
 class VideoContentHandler(private val context: Context) : ContentHandler, Disposable, PlayPausable {
     private var videoContentView: ExoVideoView? = null
     private var autoplay: Boolean? = null
+    private var scaleType: ScaleType? = null
   
     override fun getView(): ExoVideoView {
         return videoContentView ?: ExoVideoView(context = context).also { 
@@ -18,6 +20,8 @@ class VideoContentHandler(private val context: Context) : ContentHandler, Dispos
                 autoplay?.let { autoplay ->
                     setAutoplay(autoplay)
                 }
+                
+                it.scaleType = scaleType
             }
         }
     }
@@ -31,6 +35,11 @@ class VideoContentHandler(private val context: Context) : ContentHandler, Dispos
 
     override fun setViewVisibility(visibility: Int) {
         videoContentView?.setViewVisibility(visibility)
+    }
+
+    override fun setViewScaleType(scaleType: ScaleType) {
+        this.scaleType = scaleType
+        videoContentView?.scaleType = scaleType
     }
     
     override fun showContent(content: Content) {

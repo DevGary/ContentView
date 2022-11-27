@@ -4,10 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.model.content.components.ContentSource
 import com.devgary.contentview.image.databinding.ImageContentViewBinding
+import com.devgary.contentview.model.ScaleType
 
 class ImageContentView @JvmOverloads constructor(
     context: Context,
@@ -15,6 +17,17 @@ class ImageContentView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : FrameLayout(context, attrs, defStyleAttr) {
     private val binding = ImageContentViewBinding.inflate(LayoutInflater.from(context), this, true)
+
+    var scaleType: ScaleType? = null
+        set(value) {
+            binding.photoview.scaleType = when(value) {
+                ScaleType.FILL_WIDTH -> ImageView.ScaleType.FIT_XY
+                ScaleType.FIT_CENTER -> ImageView.ScaleType.FIT_CENTER
+                null -> null
+            }
+            
+            field = value
+        }
     
     fun setViewVisibility(visibility: Int) {
         this.visibility = visibility
