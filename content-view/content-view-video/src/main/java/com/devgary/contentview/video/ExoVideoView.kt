@@ -8,6 +8,8 @@ import android.widget.FrameLayout
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.source.MediaSource
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.model.content.components.ContentSource
 import com.devgary.contentcore.util.TAG
@@ -29,6 +31,7 @@ class ExoVideoView @JvmOverloads constructor(
     private var content: Content? = null
     private var exoplayer: ExoPlayer? = null
     private var autoplay: Boolean = true
+    private var mediaSource: MediaSource? = null
 
     init {
         binding.playerView.setOnClickListener { 
@@ -38,7 +41,7 @@ class ExoVideoView @JvmOverloads constructor(
     
     private fun getOrCreatePlayer(): ExoPlayer {
         if (exoplayer == null) {
-            Log.d(TAG, "Creating instance of ${name<ExoPlayer>()}")
+            Log.d(TAG, "Creating instance of ${name<ExoPlayer>()} for ${content?.source?.toLog()}")
             exoplayer = ExoPlayer.Builder(context)
                 .build()
                 .also { exoplayer ->
@@ -60,6 +63,9 @@ class ExoVideoView @JvmOverloads constructor(
                     })
                 }
         }
+        else {
+            Log.d(TAG, "Reusing instance of ${name<ExoPlayer>()} for ${content?.source?.toLog()}")
+        }
         
         return exoplayer!!
     }
@@ -78,7 +84,12 @@ class ExoVideoView @JvmOverloads constructor(
             }
 
             mediaItem?.let {
-                getOrCreatePlayer().setMediaItem(it)
+                val mediaSourceFactory = DefaultMediaSourceFactory(context)
+                releaseMedia()
+                mediaSourceFactory.createMediaSource(it).also { mediaSource ->
+                    this.mediaSource = mediaSource
+                    getOrCreatePlayer().setMediaSource(mediaSource)
+                }
             }
         }
     }
@@ -117,10 +128,16 @@ class ExoVideoView @JvmOverloads constructor(
     fun releasePlayer() {
         exoplayer?.let { exoplayer ->
             Log.i(TAG, "Releasing player")
+            releaseMedia()
             exoplayer.release()
         }
         content = null
         exoplayer = null
+    }
+
+    private fun releaseMedia() {
+        mediaSource?.releaseSource { _, _ -> }
+        exoplayer?.clearMediaItems()
     }
 
     fun setViewVisibility(visibility: Int) {
