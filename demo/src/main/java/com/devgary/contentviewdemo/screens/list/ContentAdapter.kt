@@ -26,31 +26,12 @@ class ContentAdapter(
                 /* attachToParent = */false
             )
         )
-        
-        viewHolder.binding.urlTextView.setOnClickListener {
-            viewHolder.binding.contentview.dispose()
-
-            val contentUrl = urlCollection[viewHolder.bindingAdapterPosition]
-            
-            CoroutineScope(Dispatchers.IO).launch {
-                contentLinkHandler.getContent(contentUrl)?.let { it ->
-                    android.os.Handler(Looper.getMainLooper()).post {
-                        viewHolder.binding.contentview.showContent(it)
-                    }
-                }
-            }
-        }
-        
+         
         return viewHolder
     }
 
     override fun onBindViewHolder(holder: ContentViewHolder, position: Int) {
         holder.bind(urlCollection[position])
-    }
-
-    override fun onViewRecycled(holder: ContentViewHolder) {
-        super.onViewRecycled(holder)
-        holder.release()
     }
 
     override fun getItemCount(): Int = urlCollection.size
@@ -61,7 +42,7 @@ class ContentAdapter(
         notifyDataSetChanged()
     }
     
-    inner class ContentViewHolder(val binding: ItemLayoutListBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ContentViewHolder(private val binding: ItemLayoutListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(contentUrl: String) {
             binding.urlTextView.text = contentUrl
             
@@ -75,10 +56,6 @@ class ContentAdapter(
                     }
                 }
             }
-        }
-        
-        fun release() {
-            binding.contentview.dispose()
         }
     }
 }

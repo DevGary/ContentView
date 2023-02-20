@@ -32,12 +32,13 @@ class ListViewModel @Inject constructor(
     init {
         if (_urls.value == null) {
             _urls.value = listOf(
-                "https://imgur.com/gallery/EH7seB9",
                 "https://i.imgur.com/pRaLUY1.jpg",
                 "https://gfycat.com/FoolishCompetentAegeancat",
                 "https://streamable.com/hwa6l",
                 "https://streamable.com/m/kevin-gausman-in-play-run-s-to-mike-zunino",
-                "https://i.redd.it/bco4cqkcv8q91.jpg"
+                "https://i.redd.it/bco4cqkcv8q91.jpg",
+                "https://gfycat.com/cookedbadasianwaterbuffalo",
+                "https://gfycat.com/equatorialconcernedfinch",
             )
         }
     }
