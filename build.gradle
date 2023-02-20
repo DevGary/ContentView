@@ -4,6 +4,7 @@ buildscript {
 
     dependencies {
         classpath("de.mannodermaus.gradle.plugins:android-junit5:$versions.junit5Plugin")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:$versions.daggerHilt")
     }
 }
 
