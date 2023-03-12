@@ -3,7 +3,7 @@ ext.versions = [
         targetSdk:                33,
         compileSdk:               33,
         
-        libVersion                : "0.1.4",
+        libVersion                : "0.2.0",
 
         ktReflect                 : '1.7.10',
         
@@ -17,6 +17,7 @@ ext.versions = [
         recyclerview              : '1.1.0',
         lifecycle                 : '2.5.1',
         
+        daggerHilt                : '2.43.2',
         moshi                     : '1.13.0',
         retrofit                  : '2.9.0',
         retrofitMoshi             : '2.4.0',

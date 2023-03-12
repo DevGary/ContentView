@@ -7,3 +7,10 @@ open class Content(
     val source: ContentSource,
     val type: ContentType,
 )
+
+fun Content.areContentsTheSame(other: Content): Boolean {
+    if (this == other) return true
+
+    if (type != other.type) return false
+    return source.areContentsTheSame(other.source)
+}

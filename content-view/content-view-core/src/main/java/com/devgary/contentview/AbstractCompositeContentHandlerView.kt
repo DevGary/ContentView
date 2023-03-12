@@ -6,15 +6,18 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.FrameLayout
-import androidx.core.view.contains
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.util.TAG
+import com.devgary.contentcore.util.addViewIfNotExist
 import com.devgary.contentcore.util.classNameWithValue
 import com.devgary.contentcore.util.name
 import com.devgary.contentview.interfaces.Disposable
 import com.devgary.contentview.interfaces.PlayPausable
+import com.devgary.contentview.interfaces.Recyclable
+import com.devgary.contentview.model.ScaleType
+import kotlin.reflect.KClass
 
-abstract class AbstractContentHandlerView @JvmOverloads constructor(
+abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
@@ -23,17 +26,20 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
     private val contentHandlers = mutableListOf<ContentHandler>()
     private var lastUsedHandler: ContentHandler? = null
 
+    private var viewPoolComposite: ViewPoolComposite? = null
+
     init {
         registerContentHandlers()
+        setViewScaleType(ScaleType.FILL_WIDTH)
     }
 
     private fun registerContentHandlers() {
-        for (providedContentHandler in provideContentHandlers()) {
+        for (providedContentHandler in createContentHandlers()) {
             contentHandlers.add(providedContentHandler)
         }
     }
     
-    abstract fun provideContentHandlers(): List<ContentHandler>
+    abstract fun createContentHandlers(): List<ContentHandler>
 
     override fun getView() = this
 
@@ -47,6 +53,28 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
             .forEach { handler -> handler.setViewVisibility(visibility) }
     }
 
+    final override fun setViewScaleType(scaleType: ScaleType) {
+        contentHandlers
+            .forEach { handler -> handler.setViewScaleType(scaleType) }
+    }
+
+    fun attachViewPool(viewPoolComposite: ViewPoolComposite) {
+        this.viewPoolComposite = viewPoolComposite
+
+        contentHandlers
+            .filter { contentHandler -> contentHandler is Recyclable }
+            .forEach { contentHandler ->
+                (contentHandler as Recyclable).let {
+                    val viewPool = viewPoolComposite.getOrCreatePool(
+                        clazz = contentHandler.javaClass.kotlin,
+                        viewPoolCreator = { it.getOrCreateViewPool() }
+                    )
+
+                    it.setViewPool(viewPool)
+                }
+            }
+    }
+    
     override fun showContent(content: Content) {
         val firstContentHandlerForContent = contentHandlers.firstOrNull { handler ->
             handler.canShowContent(content)
@@ -70,14 +98,19 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
 
     private fun addContentHandlerViewIfNotAdded(handler: ContentHandler) {
         val contentHandlerView = handler.getView()
-        if (!contains(contentHandlerView)) {
-            addView(contentHandlerView)
-        }
+        addViewIfNotExist(contentHandlerView)
     }
 
     override fun dispose() {
+        recycle()
         contentHandlers.forEach {
             (it as? Disposable)?.dispose()
+        }
+    }
+    
+    private fun recycle() {
+        contentHandlers.forEach {
+            (it as? Recyclable)?.recycle()
         }
     }
     
@@ -106,9 +139,9 @@ abstract class AbstractContentHandlerView @JvmOverloads constructor(
             val savedState = SavedState(it)
             savedState.positionOfLastUsedContentHandler = contentHandlers.indexOf(lastUsedHandler)
             return savedState
+        } ?: run {
+            return null
         }
-        
-        return state
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
