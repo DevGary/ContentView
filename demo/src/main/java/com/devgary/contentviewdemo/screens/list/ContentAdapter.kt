@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.devgary.contentlinkapi.content.ContentLinkHandler
 import com.devgary.contentview.ViewPoolComposite
 import com.devgary.contentview.model.ScaleType
+import com.devgary.contentview.video.VideoContentHandler
 import com.devgary.contentviewdemo.databinding.ItemLayoutListBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,9 @@ class ContentAdapter(
     private val contentLinkHandler: ContentLinkHandler,
 ) : RecyclerView.Adapter<ContentAdapter.ContentViewHolder>() {
 
-    private val viewPoolComposite = ViewPoolComposite()
+    private val viewPoolComposite = ViewPoolComposite().also {
+        it.setPoolMaxSize(poolType = VideoContentHandler::class.java.kotlin, maxSize = 3)
+    }
                 
     private val urlCollection: MutableList<String> = mutableListOf()
 

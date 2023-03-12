@@ -27,7 +27,6 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     private var lastUsedHandler: ContentHandler? = null
 
     private var viewPoolComposite: ViewPoolComposite? = null
-    val viewPoolMaxSizeConfig = mutableMapOf<KClass<out ContentHandler>, Int>()
 
     init {
         registerContentHandlers()
@@ -70,10 +69,6 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
                         clazz = contentHandler.javaClass.kotlin,
                         viewPoolCreator = { it.getOrCreateViewPool() }
                     )
-
-                    viewPoolMaxSizeConfig[contentHandler.javaClass.kotlin]?.let { maxSize ->
-                        viewPool.maxSize = maxSize
-                    }
 
                     it.setViewPool(viewPool)
                 }
