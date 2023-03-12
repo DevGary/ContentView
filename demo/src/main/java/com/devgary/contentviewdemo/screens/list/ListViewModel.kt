@@ -39,6 +39,17 @@ class ListViewModel @Inject constructor(
                 "https://i.redd.it/bco4cqkcv8q91.jpg",
                 "https://gfycat.com/cookedbadasianwaterbuffalo",
                 "https://gfycat.com/equatorialconcernedfinch",
+                "https://gfycat.com/ashamedlonelydikkops-adventure-time-sure-thing-definitely-of-course",
+                "https://gfycat.com/lawfuljitteryhoneybadger",
+                "https://gfycat.com/admirableoldcoelacanth-do-not-want-no-thanks-nope",
+                "https://gfycat.com/viciousresponsibleafricanhornbill",
+                "https://gfycat.com/famousbabyishleonberger",
+                "https://gfycat.com/admirablepracticalarizonaalligatorlizard",
+                "https://gfycat.com/admirablegracefulboa",
+                "https://streamable.com/i7wmij",
+                "https://streamable.com/vp67j",
+                "https://gfycat.com/menacinggracefuldavidstiger",
+                "https://gfycat.com/heartfeltinfinitechrysalis-leagueoflegends-teemo",
             )
         }
     }
