@@ -22,7 +22,7 @@ class ContentAdapter(
 ) : RecyclerView.Adapter<ContentAdapter.ContentViewHolder>() {
 
     private val viewPoolComposite = ViewPoolComposite().also {
-        it.setPoolMaxSize(poolType = VideoContentHandler::class.java.kotlin, maxSize = 3)
+        it.setPoolMaxSize(poolType = VideoContentHandler::class.java.kotlin, maxSize = 2)
     }
                 
     private val urlCollection: MutableList<String> = mutableListOf()
@@ -51,7 +51,7 @@ class ContentAdapter(
         notifyDataSetChanged()
     }
     
-    inner class ContentViewHolder(private val binding: ItemLayoutListBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ContentViewHolder(val binding: ItemLayoutListBinding) : RecyclerView.ViewHolder(binding.root) {
         private var contentUrl: String? = null
         
         fun bind(contentUrl: String) {
