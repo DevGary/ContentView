@@ -15,6 +15,7 @@ import com.devgary.contentview.interfaces.Disposable
 import com.devgary.contentview.interfaces.PlayPausable
 import com.devgary.contentview.interfaces.Recyclable
 import com.devgary.contentview.model.ScaleType
+import kotlin.reflect.KClass
 
 abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     context: Context,
@@ -26,6 +27,7 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     private var lastUsedHandler: ContentHandler? = null
 
     private var viewPoolComposite: ViewPoolComposite? = null
+    val viewPoolMaxSizeConfig = mutableMapOf<KClass<out ContentHandler>, Int>()
 
     init {
         registerContentHandlers()
@@ -69,8 +71,9 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
                         viewPoolCreator = { it.getOrCreateViewPool() }
                     )
 
-                    // TODO [!]: Make this configurable by users of library
-                    viewPool.maxSize = 2
+                    viewPoolMaxSizeConfig[contentHandler.javaClass.kotlin]?.let { maxSize ->
+                        viewPool.maxSize = maxSize
+                    }
 
                     it.setViewPool(viewPool)
                 }
