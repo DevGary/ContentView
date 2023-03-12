@@ -1,7 +1,9 @@
 package com.devgary.contentcore.util
 
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.core.view.contains
 
 fun View?.setHeight(height: Int) {
     this?.let {
@@ -35,4 +37,16 @@ fun View.waitForLayout(func: () -> Unit) = with(viewTreeObserver) {
             }
         }
     })
+}
+
+fun View.removeFromParentView() {
+    (this.parent as? ViewGroup)?.let { parent ->
+        parent.removeView(this)
+    }
+}
+
+fun ViewGroup.addViewIfNotExist(viewToAdd: View) {
+    if (contains(viewToAdd)) return
+    viewToAdd.removeFromParentView()
+    addView(viewToAdd)
 }

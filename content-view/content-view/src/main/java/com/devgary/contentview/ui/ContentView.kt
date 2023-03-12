@@ -13,7 +13,7 @@ class ContentView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : AbstractCompositeContentHandlerView(context, attrs, defStyleAttr) {
-    override fun provideContentHandlers(): List<ContentHandler> {
+    override fun createContentHandlers(): List<ContentHandler> {
         return listOf(
             ImageContentHandler(context),
             VideoContentHandler(context),
