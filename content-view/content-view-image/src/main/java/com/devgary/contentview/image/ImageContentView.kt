@@ -37,7 +37,7 @@ class ImageContentView @JvmOverloads constructor(
         @Suppress("IMPLICIT_CAST_TO_ANY") 
         val model = when(content.source) {
             is ContentSource.Drawable -> {
-                (content.source as ContentSource.Drawable).drawable
+                (content.source as ContentSource.Drawable).drawableResId
             }
             is ContentSource.Url -> {
                 (content.source as ContentSource.Url).url
