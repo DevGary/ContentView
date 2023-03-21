@@ -4,10 +4,15 @@ import android.util.Log
 import android.view.View
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.name
+import com.devgary.contentcore.util.removeFromParentView
 import java.lang.IllegalArgumentException
 
 class ViewPool(val viewCreator: () -> View) {
     data class ViewPoolMetadata(var lastUsageMillis: Long, var isInUse: Boolean)
+    
+    interface Listener {
+        fun onViewRecycled(view: View)
+    }
 
     var maxSize = 1
         set(value) {
@@ -16,7 +21,9 @@ class ViewPool(val viewCreator: () -> View) {
             }
             field = value
         }
+    
     private val viewPool: MutableMap<View, ViewPoolMetadata> = mutableMapOf()
+    private val listeners: MutableSet<Listener> = mutableSetOf()
     
     private fun shouldCreateView(): Boolean {
         return viewPool.size < maxSize
@@ -41,7 +48,11 @@ class ViewPool(val viewCreator: () -> View) {
 
             val viewPoolMetadata = sortedViewPoolMetadata.first()
             
-            viewPool.keys.first { key -> viewPool[key] == viewPoolMetadata }
+            val recycledViewToUse = viewPool.keys.first { key -> viewPool[key] == viewPoolMetadata }
+            
+            onViewRecycled(recycledViewToUse)
+            
+            recycledViewToUse
         }
 
         setViewUsed(viewToUse)
@@ -56,16 +67,30 @@ class ViewPool(val viewCreator: () -> View) {
         )
     }
 
-    fun setViewUsed(view: View) {
+    private fun setViewUsed(view: View) {
         viewPool[view]?.apply {
             lastUsageMillis = System.currentTimeMillis()
             isInUse = true
         }
     } 
     
-    fun setViewUnused(view: View) {
+    private fun setViewUnused(view: View) {
         viewPool[view]?.apply {
             isInUse = false
         }
+    }
+    
+    private fun onViewRecycled(view: View) {
+        listeners.forEach { l -> l.onViewRecycled(view) }
+    }
+    
+    fun recycleView(view: View) {
+        setViewUnused(view)
+        view.removeFromParentView()
+        onViewRecycled(view)
+    }
+    
+    fun addListener(listener: Listener) {
+        listeners.add(listener)
     }
 }

@@ -20,6 +20,14 @@ class VideoContentHandler(private val context: Context) : ContentHandler, Dispos
     private var videoContentView: ExoVideoView? = null
     private var autoplay: Boolean? = null
     private var scaleType: ScaleType? = null
+    private val viewPoolListener = object : ViewPool.Listener {
+        override fun onViewRecycled(view: View) {
+            if (view == videoContentView) {
+                Log.d(TAG, "Detaching view from ${this@VideoContentHandler.TAG} as view was recycled")
+                videoContentView = null
+            }
+        }
+    }
 
     override fun getView(): ExoVideoView {
         // TODO [!]: Refactor into reusable code
@@ -34,8 +42,6 @@ class VideoContentHandler(private val context: Context) : ContentHandler, Dispos
                 ExoVideoView(context)
             }
         
-        viewPool?.setViewUsed(exoVideoView)
-
         return exoVideoView.also {
             videoContentView = it.also {
                 autoplay?.let { autoplay ->
@@ -48,13 +54,16 @@ class VideoContentHandler(private val context: Context) : ContentHandler, Dispos
 
     override fun getOrCreateViewPool(): ViewPool {
         if (viewPool == null) {
-            viewPool = ViewPool(viewCreator = { ExoVideoView(context) })
+            val newViewPool = ViewPool(viewCreator = { ExoVideoView(context) })
+            setViewPool(newViewPool)
         }
         return viewPool!!
     }
 
     override fun setViewPool(viewPool: ViewPool) {
-        this.viewPool = viewPool
+        this.viewPool = viewPool.also {
+            it.addListener(viewPoolListener)
+        }
     }
 
     override fun canShowContent(content: Content): Boolean {
@@ -84,7 +93,7 @@ class VideoContentHandler(private val context: Context) : ContentHandler, Dispos
         videoContentView?.let {
             it.setAutoplay(false)
             it.releaseMedia()
-            viewPool?.setViewUnused(it)
+            viewPool?.recycleView(it)
         }
     }
 
