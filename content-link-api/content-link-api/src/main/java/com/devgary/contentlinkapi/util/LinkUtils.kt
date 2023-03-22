@@ -66,4 +66,14 @@ object LinkUtils {
             null
         }
     }
+    
+    fun String.prependHttpsIfMissing(): String {
+        var finalUrl = this
+        
+        if (startsWith("//")) {
+            finalUrl = "https:" + finalUrl
+        }
+        
+        return finalUrl
+    }
 }

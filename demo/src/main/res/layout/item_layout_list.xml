@@ -30,6 +30,17 @@
             app:layout_constraintLeft_toLeftOf="@id/contentview"
             app:layout_constraintRight_toRightOf="@id/contentview"
             android:textSize="10sp"
+            />        
+        
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/debugInfoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#88000000"
+            app:layout_constraintTop_toTopOf="@id/contentview"
+            app:layout_constraintLeft_toLeftOf="@id/contentview"
+            tools:text="Debug Info"
+            android:textSize="9sp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

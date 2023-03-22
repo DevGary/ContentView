@@ -7,7 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.devgary.contentcore.util.TAG
+import com.devgary.contentcore.util.getThroughReflection
+import com.devgary.contentcore.util.trim
 import com.devgary.contentlinkapi.content.ContentLinkHandler
+import com.devgary.contentview.BuildConfig
+import com.devgary.contentview.ContentHandler
 import com.devgary.contentview.ViewPoolComposite
 import com.devgary.contentview.model.ScaleType
 import com.devgary.contentview.video.VideoContentHandler
@@ -15,14 +20,17 @@ import com.devgary.contentviewdemo.databinding.ItemLayoutListBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.StringBuilder
 
 class ContentAdapter(
     private val context: Context,
     private val contentLinkHandler: ContentLinkHandler,
 ) : RecyclerView.Adapter<ContentAdapter.ContentViewHolder>() {
 
+    private val showDebugOverlay = BuildConfig.DEBUG
+    
     private val viewPoolComposite = ViewPoolComposite().also {
-        it.setPoolMaxSize(poolType = VideoContentHandler::class.java.kotlin, maxSize = 2)
+        it.setPoolMaxSize(poolType = VideoContentHandler::class.java.kotlin, maxSize = 1)
     }
                 
     private val urlCollection: MutableList<String> = mutableListOf()
@@ -33,8 +41,11 @@ class ContentAdapter(
                 /* inflater = */ LayoutInflater.from(context),
                 /* parent = */parent,
                 /* attachToParent = */false
-            ).also { 
-                it.contentview.setViewScaleType(ScaleType.FIT_CENTER)
+            ).also { binding ->
+                binding.contentview.setViewScaleType(ScaleType.FIT_CENTER)
+                viewPoolComposite?.let {
+                    binding.contentview.attachViewPool(it)
+                }
             }
         )
     }
@@ -53,23 +64,54 @@ class ContentAdapter(
     
     inner class ContentViewHolder(val binding: ItemLayoutListBinding) : RecyclerView.ViewHolder(binding.root) {
         private var contentUrl: String? = null
-        
-        fun bind(contentUrl: String) {
-            this.contentUrl = contentUrl
-            binding.urlTextView.text = contentUrl
-            binding.contentview.attachViewPool(viewPoolComposite)
-            
-            // TODO [!]: Remove temp code after ActivatableContent implemented
-            if (contentUrl.endsWith(".png") || contentUrl.endsWith(".jpg")) {
-                binding.contentview.setViewVisibility(View.VISIBLE)
-                showContent()
-            }
-            else {
-                binding.contentview.setViewVisibility(View.GONE)
+        private val debugInfoRefreshHandler = Handler(Looper.getMainLooper())
+
+        init {
+            binding.urlTextView.setOnClickListener { 
+                activateContent()
             }
         }
+        
+        fun bind(contentUrl: String) {
+            binding.contentview.attachViewPool(viewPoolComposite)
+            
+            this.contentUrl = contentUrl
+            binding.urlTextView.text = contentUrl
+            showContent()
 
-        fun showContent() {
+            if (showDebugOverlay) {
+                debugInfoRefreshHandler.post(object : Runnable {
+                    override fun run() {
+                        bindDebugInfo()
+                        debugInfoRefreshHandler.postDelayed(this, 250)
+                    }
+                })
+            }
+        }
+        
+        private fun bindDebugInfo() {
+            if (showDebugOverlay) {
+                binding.debugInfoTextView.text = createDebugInfoString()
+            }
+        }
+        
+        private fun createDebugInfoString(): String {
+            val strBuilder = StringBuilder()
+            strBuilder.appendLine("Url: $contentUrl")
+            strBuilder.appendLine("ContentView: ${binding.contentview.TAG}")
+            strBuilder.appendLine("ContentView Content: ${binding.contentview.content?.toLogString()?.trim(maxLength = 100)}")
+            strBuilder.appendLine("Content Handler: ${binding.contentview.currentlyUsedHandler?.TAG}")
+            strBuilder.appendLine()
+            
+            val contentHandlers = binding.contentview.getThroughReflection<List<ContentHandler>>("contentHandlers")
+            val videoContentHandler = contentHandlers?.filterIsInstance<VideoContentHandler>()?.firstOrNull()
+            videoContentHandler?.let {
+                strBuilder.append("VideoContentHandler.View: ${it.videoContentView?.TAG}")
+            }
+            return strBuilder.toString()
+        }
+
+        private fun showContent() {
             val contentUrl = contentUrl ?: return
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -78,9 +120,18 @@ class ContentAdapter(
                         binding.contentview.setAutoplay(true)
                         binding.contentview.setViewVisibility(View.VISIBLE)
                         binding.contentview.showContent(content)
+                        binding.contentview.play()
                     }
                 }
             }
+        }
+        
+        fun activateContent() {
+            binding.contentview.activate()
+        }
+ 
+        fun deactivateContent() {
+            binding.contentview.deactivate()
         }
 
         fun stopPlayingContent() {

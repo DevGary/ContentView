@@ -124,17 +124,24 @@ class ListFragment : Fragment(), MenuProvider {
             }
 
             recyclerViewOnScrolled.debounce(250).onEach {
-                val visibleItemPositions = RecyclerViewUtils.getVisibleItemPositions(layoutManager)
                 val positionsToPlay = mutableListOf<Int>()
-                if (visibleItemPositions.size > 2) {
-                    positionsToPlay.addAll(visibleItemPositions.subList(visibleItemPositions.size - 2 - 1, visibleItemPositions.size - 1))
+                positionsToPlay.add(RecyclerViewUtils.calculateCenteredRecyclerViewItemPosition(recyclerView, R.id.contentview))
+
+                // TODO [!]: Clean up test code
+                for (i in 0..adapter!!.itemCount) {
+                    if (!positionsToPlay.contains(i)) {
+                        val viewHolderToPlay = recyclerView.findViewHolderForAdapterPosition(i)
+                        (viewHolderToPlay as? ContentAdapter.ContentViewHolder)?.let {
+                            it.deactivateContent()
+                        }
+                    }
                 }
                 
                 positionsToPlay.onEach { position ->
                     val viewHolderToPlay = recyclerView.findViewHolderForAdapterPosition(position)
                     (viewHolderToPlay as? ContentAdapter.ContentViewHolder)?.let {
-                        Log.d(TAG, "Attempting to play content at position $position")
-                        it.showContent()
+                        Log.d(TAG, "Attempting to activate content at position $position")
+                        it.activateContent()
                     }
                 }
             }.launchIn(MainScope())

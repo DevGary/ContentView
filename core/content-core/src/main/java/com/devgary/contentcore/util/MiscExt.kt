@@ -25,3 +25,12 @@ inline fun <reified T> classNameWithValue(value: T): String {
     val clazz: Class<*> = T::class.java
     return clazz.simpleName + " = " + value
 }
+
+inline fun <reified T : Any> Any.getThroughReflection(propertyName: String): T? {
+    val getterName = "get" + propertyName.capitalize()
+    return try {
+        javaClass.getMethod(getterName).invoke(this) as? T
+    } catch (e: NoSuchMethodException) {
+        null
+    }
+}

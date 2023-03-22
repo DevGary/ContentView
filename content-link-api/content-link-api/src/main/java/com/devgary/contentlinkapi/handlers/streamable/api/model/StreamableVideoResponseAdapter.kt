@@ -1,6 +1,7 @@
 package com.devgary.contentlinkapi.handlers.streamable.api.model
 
 import com.devgary.contentlinkapi.handlers.ApiException
+import com.devgary.contentlinkapi.util.LinkUtils.prependHttpsIfMissing
 import com.squareup.moshi.*
 
 class StreamableVideoResponseAdapter {
@@ -17,6 +18,7 @@ class StreamableVideoResponseAdapter {
         val streamableVideoEndpointResponse = responseAdapter.fromJson(reader.peekJson())
         
         streamableVideoEndpointResponse?.apply {
+            thumbnailUrl = thumbnailUrl?.prependHttpsIfMissing()
             var mp4Video: StreamableVideo? = null
             var mp4MobileVideo: StreamableVideo? = null
 
