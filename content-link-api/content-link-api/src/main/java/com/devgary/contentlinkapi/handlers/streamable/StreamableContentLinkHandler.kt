@@ -1,8 +1,10 @@
 package com.devgary.contentlinkapi.handlers.streamable
 
+import com.devgary.contentcore.model.content.ActivatableContent
 import com.devgary.contentcore.model.content.components.ContentSource
 import com.devgary.contentcore.model.content.components.ContentType
 import com.devgary.contentcore.model.content.Content
+import com.devgary.contentcore.model.content.DefaultContentCreator
 import com.devgary.contentcore.util.equalsIgnoreCase
 import com.devgary.contentcore.util.runIfLazyInitialized
 import com.devgary.contentlinkapi.handlers.interfaces.ClearableMemory
@@ -32,13 +34,18 @@ class StreamableContentLinkHandler : ContentLinkHandler, ClearableMemory {
                     .minByOrNull { v -> v.bitrate }
 
                 video?.let {
-                    return Content(ContentSource.Url(video.url), ContentType.VIDEO)
+                    return DefaultContentCreator.createVideoContent(
+                        videoUrl = video.url,
+                        thumbnailUrl = response.thumbnailUrl
+                    )
                 }
             }
         }
         else {
             streamableClient.parseVideoUrlFromWebpage(url)?.let { 
-                return Content(ContentSource.Url(it), ContentType.VIDEO)
+                val videoContent = Content(ContentSource.Url(it), ContentType.VIDEO)
+                val thumbnailContent = Content(ContentSource.Empty, ContentType.IMAGE)
+                return ActivatableContent(contentWhenNotActivated = thumbnailContent, contentWhenActivated = videoContent)
             }
         }
 

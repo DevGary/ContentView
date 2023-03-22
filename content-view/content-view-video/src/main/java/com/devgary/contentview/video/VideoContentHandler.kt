@@ -17,7 +17,9 @@ import com.devgary.contentview.model.ScaleType
 class VideoContentHandler(private val context: Context) : ContentHandler, Disposable, Recyclable, PlayPausable {
     private var viewPool: ViewPool? = null
     
-    private var videoContentView: ExoVideoView? = null
+    // TODO [!]: Only public for logging/debugging purposes. Maybe use reflection instead.
+    var videoContentView: ExoVideoView? = null
+        private set
     private var autoplay: Boolean? = null
     private var scaleType: ScaleType? = null
     private val viewPoolListener = object : ViewPool.Listener {
@@ -74,7 +76,10 @@ class VideoContentHandler(private val context: Context) : ContentHandler, Dispos
     }
 
     override fun setViewVisibility(visibility: Int) {
-        videoContentView?.setViewVisibility(visibility)
+        videoContentView?.let {
+            Log.d(TAG, "Setting visibility of view $it to $visibility")
+            it.setViewVisibility(visibility)
+        }
     }
 
     override fun setViewScaleType(scaleType: ScaleType) {
@@ -94,6 +99,7 @@ class VideoContentHandler(private val context: Context) : ContentHandler, Dispos
             it.setAutoplay(false)
             it.releaseMedia()
             viewPool?.recycleView(it)
+             videoContentView = null
         }
     }
 

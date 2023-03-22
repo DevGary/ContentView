@@ -42,6 +42,7 @@ class ImageContentView @JvmOverloads constructor(
             is ContentSource.Url -> {
                 (content.source as ContentSource.Url).url
             }
+            ContentSource.Empty -> null
             else -> null
         }
         
@@ -49,6 +50,8 @@ class ImageContentView @JvmOverloads constructor(
             Glide.with(context)
                 .load(it)
                 .into(binding.photoview)
+        } ?: run {
+            Glide.with(context).clear(binding.photoview)
         }
     }
 }
