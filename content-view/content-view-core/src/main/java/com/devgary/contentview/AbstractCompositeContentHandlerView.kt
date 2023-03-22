@@ -6,26 +6,29 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.FrameLayout
+import com.devgary.contentcore.model.content.ActivatableContent
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.addViewIfNotExist
 import com.devgary.contentcore.util.classNameWithValue
 import com.devgary.contentcore.util.name
+import com.devgary.contentview.interfaces.Activatable
 import com.devgary.contentview.interfaces.Disposable
 import com.devgary.contentview.interfaces.PlayPausable
 import com.devgary.contentview.interfaces.Recyclable
 import com.devgary.contentview.model.ScaleType
-import kotlin.reflect.KClass
 
 abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : FrameLayout(context, attrs, defStyleAttr), ContentHandler, Disposable, PlayPausable {
+) : FrameLayout(context, attrs, defStyleAttr), ContentHandler, Disposable, PlayPausable, Activatable {
 
-    private val contentHandlers = mutableListOf<ContentHandler>()
-    private var lastUsedHandler: ContentHandler? = null
-
+    val contentHandlers = mutableListOf<ContentHandler>()
+    var currentlyUsedHandler: ContentHandler? = null
+        private set
+    var content: Content? = null
+        private set
     private var viewPoolComposite: ViewPoolComposite? = null
 
     init {
@@ -48,6 +51,7 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     }
     
     private fun setContentHandlersVisibility(visibility: Int, excludedContentHandler: ContentHandler? = null) {
+        Log.d(TAG, "Hiding every ${name<ContentHandler>()} except $excludedContentHandler")
         contentHandlers
             .filter { handler -> handler != excludedContentHandler }
             .forEach { handler -> handler.setViewVisibility(visibility) }
@@ -76,19 +80,23 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     }
     
     override fun showContent(content: Content) {
+        this.content = content
+        showContentInternal(content)
+    }
+    
+    private fun showContentInternal(content: Content) {
+        Log.d(TAG, "showContentInternal(content = $content) called")
         val firstContentHandlerForContent = contentHandlers.firstOrNull { handler ->
             handler.canShowContent(content)
         }
-
-        lastUsedHandler = null
-        setContentHandlersVisibility(GONE, excludedContentHandler = firstContentHandlerForContent)
-
+        
         firstContentHandlerForContent?.let { handler ->
+            currentlyUsedHandler = handler
             addContentHandlerViewIfNotAdded(handler)
-            handler.showContent(content) 
-            lastUsedHandler = handler
-        } ?: run { 
-            Log.e(TAG, "No ${name<ContentHandler>()} found for ${classNameWithValue(content)}") 
+            handler.showContent(content)
+            setContentHandlersVisibility(GONE, excludedContentHandler = currentlyUsedHandler)
+        } ?: run {
+            Log.e(TAG, "No ${name<ContentHandler>()} found for ${classNameWithValue(content)}")
         }
     }
 
@@ -132,12 +140,24 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
         }
     }
 
+    override fun activate() {
+        (content as? ActivatableContent)?.let {
+            showContentInternal(it.contentWhenActivated)
+        }
+    }
+
+    override fun deactivate() {
+        (content as? ActivatableContent)?.let {
+            showContentInternal(it.contentWhenNotActivated)
+        }
+    }
+
     override fun onSaveInstanceState(): Parcelable? {
         val state = super.onSaveInstanceState()
         
         state?.let {
             val savedState = SavedState(it)
-            savedState.positionOfLastUsedContentHandler = contentHandlers.indexOf(lastUsedHandler)
+            savedState.positionOfLastUsedContentHandler = contentHandlers.indexOf(currentlyUsedHandler)
             return savedState
         } ?: run {
             return null

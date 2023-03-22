@@ -22,3 +22,8 @@ fun String.containsIgnoreCase(value: String): Boolean {
 fun String?.nullIfBlank(): String? {
     return if (this.isNullOrBlank()) null else this
 }
+
+fun String.trim(maxLength: Int): String {
+    return if (this.length <= maxLength) this
+    else substring(0, kotlin.math.min(maxLength, this.length))
+}

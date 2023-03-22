@@ -14,6 +14,7 @@ sealed class ContentSource {
             }
         }
     }
+    
     class Drawable(val drawableResId: Int) : ContentSource() {
         override fun areContentsTheSame(other: ContentSource): Boolean {
             if (this == other) return true
@@ -25,11 +26,16 @@ sealed class ContentSource {
             }
         }
     }
+
+    object Empty : ContentSource() {
+        override fun areContentsTheSame(other: ContentSource) = true
+    }
     
     fun toLogString(): String {
         return when (this) {
             is Drawable -> drawableResId.toString()
             is Url -> url
+            is Empty -> "EMPTY"
         }
     }
 }
