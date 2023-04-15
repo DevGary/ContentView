@@ -5,18 +5,23 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Gravity
+import android.view.View
 import android.widget.FrameLayout
+import androidx.core.view.contains
 import com.devgary.contentcore.model.content.ActivatableContent
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.util.TAG
-import com.devgary.contentcore.util.addViewIfNotExist
 import com.devgary.contentcore.util.classNameWithValue
 import com.devgary.contentcore.util.name
+import com.devgary.contentcore.util.removeFromParentView
 import com.devgary.contentview.interfaces.Activatable
 import com.devgary.contentview.interfaces.Disposable
 import com.devgary.contentview.interfaces.PlayPausable
 import com.devgary.contentview.interfaces.Recyclable
 import com.devgary.contentview.model.ScaleType
+import com.devgary.contentview.util.generateIdIfNotExists
+import com.devgary.contentview.util.setGravityFrameLayoutParent
 
 abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     context: Context,
@@ -24,7 +29,7 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : FrameLayout(context, attrs, defStyleAttr), ContentHandler, Disposable, PlayPausable, Activatable {
 
-    val contentHandlers = mutableListOf<ContentHandler>()
+    private val contentHandlers = mutableListOf<ContentHandler>()
     var currentlyUsedHandler: ContentHandler? = null
         private set
     var content: Content? = null
@@ -33,7 +38,7 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
 
     init {
         registerContentHandlers()
-        setViewScaleType(ScaleType.FILL_WIDTH)
+        setViewScaleType(ScaleType.FIT_CENTER)
     }
 
     private fun registerContentHandlers() {
@@ -107,6 +112,23 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     private fun addContentHandlerViewIfNotAdded(handler: ContentHandler) {
         val contentHandlerView = handler.getView()
         addViewIfNotExist(contentHandlerView)
+    }
+    
+    private fun addViewIfNotExist(viewToAdd: View) {
+        if (contains(viewToAdd)) return
+        
+        processViewBeforeAdding(viewToAdd)
+        addView(viewToAdd)
+        processViewAfterAdding(viewToAdd)
+    }
+    
+    private fun processViewBeforeAdding(view: View) {
+        view.removeFromParentView()
+        view.generateIdIfNotExists()
+    }
+    
+    private fun processViewAfterAdding(view: View) {
+        view.setGravityFrameLayoutParent(Gravity.CENTER)
     }
 
     override fun dispose() {
