@@ -20,8 +20,8 @@ class ImageContentView @JvmOverloads constructor(
 
     var scaleType: ScaleType? = null
         set(value) {
-            binding.photoview.scaleType = when(value) {
-                ScaleType.FILL_WIDTH -> ImageView.ScaleType.FIT_XY
+            binding.imageview.scaleType = when(value) {
+                ScaleType.FILL_WIDTH -> ImageView.ScaleType.CENTER_CROP
                 ScaleType.FIT_CENTER -> ImageView.ScaleType.FIT_CENTER
                 null -> null
             }
@@ -49,9 +49,10 @@ class ImageContentView @JvmOverloads constructor(
         model?.let {
             Glide.with(context)
                 .load(it)
-                .into(binding.photoview)
+                .fitCenter()
+                .into(binding.imageview)
         } ?: run {
-            Glide.with(context).clear(binding.photoview)
+            Glide.with(context).clear(binding.imageview)
         }
     }
 }
