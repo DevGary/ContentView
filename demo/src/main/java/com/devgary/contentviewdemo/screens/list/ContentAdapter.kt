@@ -99,7 +99,7 @@ class ContentAdapter(
             val strBuilder = StringBuilder()
             strBuilder.appendLine("Url: $contentUrl")
             strBuilder.appendLine("ContentView: ${binding.contentview.TAG}")
-            strBuilder.appendLine("ContentView Content: ${binding.contentview.content?.toLogString()?.trim(maxLength = 100)}")
+            strBuilder.appendLine("ContentView Content: ${binding.contentview.content?.toLogString()?.trim(maxLength = 130)}")
             strBuilder.appendLine("Content Handler: ${binding.contentview.currentlyUsedHandler?.TAG}")
             strBuilder.appendLine()
             

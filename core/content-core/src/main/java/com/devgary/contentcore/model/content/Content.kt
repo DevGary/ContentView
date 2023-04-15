@@ -7,7 +7,7 @@ open class Content(
     val source: ContentSource,
     val type: ContentType,
 ) {
-    fun toLogString() =  "$type ${source.toLogString()}"
+    open fun toLogString() =  "$type ${source.toLogString()}"
 }
 
 fun Content.areContentsTheSame(other: Content): Boolean {
