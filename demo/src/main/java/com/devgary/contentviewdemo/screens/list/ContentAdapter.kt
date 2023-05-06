@@ -42,7 +42,7 @@ class ContentAdapter(
                 /* parent = */parent,
                 /* attachToParent = */false
             ).also { binding ->
-                binding.contentview.setViewScaleType(ScaleType.FIT_CENTER)
+                binding.contentview.setViewScaleType(ScaleType.FILL_WIDTH)
                 viewPoolComposite?.let {
                     binding.contentview.attachViewPool(it)
                 }
