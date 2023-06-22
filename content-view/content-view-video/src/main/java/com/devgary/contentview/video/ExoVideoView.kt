@@ -137,19 +137,24 @@ class ExoVideoView @JvmOverloads constructor(
         }
     }
 
+    fun releaseAll() {
+        releaseMedia()
+        releasePlayer()
+    }
+    
     fun releasePlayer() {
         exoplayer?.let { exoplayer ->
             Log.i(TAG, "Releasing player")
-            releaseMedia()
             exoplayer.release()
         }
-        content = null
         exoplayer = null
     }
 
     fun releaseMedia() {
         mediaSource?.releaseSource { _, _ -> }
         exoplayer?.clearMediaItems()
+        mediaSource = null
+        content = null
     }
 
     fun setViewVisibility(visibility: Int) {
