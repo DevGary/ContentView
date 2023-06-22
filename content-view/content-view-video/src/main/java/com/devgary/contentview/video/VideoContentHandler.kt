@@ -99,12 +99,12 @@ class VideoContentHandler(private val context: Context) : ContentHandler, Dispos
             it.setAutoplay(false)
             it.releaseMedia()
             viewPool?.recycleView(it)
-             videoContentView = null
+            videoContentView = null
         }
     }
 
     override fun dispose() {
-        videoContentView?.releasePlayer()
+        videoContentView?.releaseAll()
     }
 
     override fun play() {

@@ -132,10 +132,10 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     }
 
     override fun dispose() {
-        recycle()
         contentHandlers.forEach {
             (it as? Disposable)?.dispose()
         }
+        recycle()
     }
     
     private fun recycle() {

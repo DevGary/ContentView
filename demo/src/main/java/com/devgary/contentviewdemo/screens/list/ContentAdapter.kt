@@ -67,8 +67,12 @@ class ContentAdapter(
         private val debugInfoRefreshHandler = Handler(Looper.getMainLooper())
 
         init {
-            binding.urlTextView.setOnClickListener { 
+            binding.debugInfoTextView.setOnClickListener { 
                 activateContent()
+            }
+            
+            binding.contentview.setOnClickListener {
+                disposeContent()
             }
         }
         
@@ -129,12 +133,16 @@ class ContentAdapter(
         fun activateContent() {
             binding.contentview.activate()
         }
- 
+        
         fun deactivateContent() {
             binding.contentview.deactivate()
         }
 
-        fun stopPlayingContent() {
+        private fun disposeContent() {
+            binding.contentview.dispose()
+        }
+
+        fun pausePlayingContent() {
             binding.contentview.pause()
         }
     }
