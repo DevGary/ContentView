@@ -1,5 +1,6 @@
-package com.devgary.contentlinkapi.handlers.streamable.api
+package com.devgary.contentlinkapi.components.streamable.api
 
+import com.devgary.contentlinkapi.handlers.streamable.api.StreamableEndpoint
 import com.devgary.contentlinkapi.handlers.streamable.api.model.StreamableVideoResponse
 import com.devgary.contentlinkapi.util.GenericMockResponses
 import com.devgary.contentlinkapi.util.enqueue
