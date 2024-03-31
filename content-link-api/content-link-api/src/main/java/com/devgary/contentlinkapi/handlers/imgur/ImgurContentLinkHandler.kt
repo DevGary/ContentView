@@ -11,8 +11,9 @@ import com.devgary.contentlinkapi.handlers.imgur.api.ImgurClient
 import com.devgary.contentlinkapi.handlers.imgur.api.ImgurEndpoint
 import com.devgary.contentlinkapi.handlers.imgur.api.model.ImgurImage
 import com.devgary.contentlinkapi.handlers.interfaces.ClearableMemory
-import com.devgary.contentlinkapi.content.ContentLinkException
 import com.devgary.contentlinkapi.content.ContentLinkHandler
+import com.devgary.contentlinkapi.content.ContentResult
+import com.devgary.contentlinkapi.content.ResponseDidNotContainContentException
 import com.devgary.contentlinkapi.util.LinkUtils
 
 class ImgurContentLinkHandler(
@@ -30,20 +31,23 @@ class ImgurContentLinkHandler(
         return parseImgurAlbumIdFromUrl(url).isNotNullOrBlank()
     }
 
-    override suspend fun getContent(url: String): Content {
-        val imgurAlbumId = parseImgurAlbumIdFromUrl(url)
+    override suspend fun getContent(url: String): ContentResult {
+        try {
+            val imgurAlbumId = parseImgurAlbumIdFromUrl(url)
 
-        if (imgurAlbumId.isNullOrEmpty()) {
-            throw ContentLinkException("Could not parse imgurAlbumId from url $url")
-        }
-
-        val response = imgurClient.getImgur(imgurAlbumId)
-        response.let {
-            val collection = it.images.map { imgurImage ->
+            if (imgurAlbumId.isNullOrEmpty()) {
+                return ContentResult.Failure(ResponseDidNotContainContentException())
+            }
+            
+            val response = imgurClient.getImgur(imgurAlbumId)
+            val collection = response.images.map { imgurImage ->
                 mapImgurImageToContent(imgurImage)
             }
 
-            return CollectionContent(ContentSource.Url(url), collection)
+            val content = CollectionContent(ContentSource.Url(url), collection)
+            return ContentResult.Success(content)
+        } catch (e: Exception) {
+            return ContentResult.Failure(e)
         }
     }
 

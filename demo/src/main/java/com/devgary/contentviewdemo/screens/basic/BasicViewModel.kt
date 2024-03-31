@@ -5,6 +5,7 @@ import com.devgary.contentcore.model.content.Content
 import com.devgary.contentlinkapi.content.AbstractCompositeContentLinkHandler
 import com.devgary.contentlinkapi.content.CompositeContentLinkHandler
 import com.devgary.contentlinkapi.content.ContentLinkHandler
+import com.devgary.contentlinkapi.content.ContentResult
 import com.devgary.contentlinkapi.handlers.gfycat.GfycatContentLinkHandler
 import com.devgary.contentlinkapi.handlers.imgur.ImgurContentLinkHandler
 import com.devgary.contentlinkapi.handlers.streamable.StreamableContentLinkHandler
@@ -12,7 +13,6 @@ import com.devgary.contentviewdemo.BuildConfig
 import com.devgary.contentviewdemo.DemoFallthroughContentLinkHandler
 import com.devgary.contentviewdemo.util.cancel
 import com.devgary.testcore.SampleContent
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -37,9 +37,6 @@ class BasicViewModel : ViewModel() {
     }
 
     private var getContentJob: Job? = null
-    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        _error.postValue(throwable.message)
-    }
 
     private val _content = MutableLiveData<Content>()
     val content: LiveData<Content> = _content
@@ -56,9 +53,15 @@ class BasicViewModel : ViewModel() {
     
     fun loadContent(url: String) {
         getContentJob.cancel()
-        getContentJob = viewModelScope.launch(coroutineExceptionHandler) {
-            contentLinkHandler.getContent(url)?.let { it ->
-                _content.postValue(it)
+        getContentJob = viewModelScope.launch {
+            when (val contentResult = contentLinkHandler.getContent(url)) {
+                is ContentResult.Success -> {
+                    _content.postValue(contentResult.content)
+                }
+
+                is ContentResult.Failure -> {
+                    _error.postValue(contentResult.error?.message ?: "Error")
+                }
             }
         }
     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devgary.contentlinkapi.content.ContentLinkHandler
+import com.devgary.contentlinkapi.content.ContentResult
 import com.devgary.contentview.ui.ContentView
 import com.devgary.contentviewdemo.util.cancel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,8 +58,14 @@ class ListViewModel @Inject constructor(
     fun loadContent(url: String, contentView: ContentView) {
         getContentJob.cancel()
         getContentJob = viewModelScope.launch(coroutineExceptionHandler) {
-            contentLinkHandler.getContent(url)?.let { it ->
-                contentView.showContent(it)
+            when (val contentResult = contentLinkHandler.getContent(url)) {
+                is ContentResult.Success -> {
+                    contentView.showContent(contentResult.content)
+                }
+
+                is ContentResult.Failure -> {
+                    _error.postValue(contentResult.error?.message ?: "Error")
+                }
             }
         }
     }  

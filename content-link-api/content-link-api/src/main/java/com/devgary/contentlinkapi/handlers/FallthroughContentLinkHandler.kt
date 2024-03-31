@@ -3,7 +3,9 @@ package com.devgary.contentlinkapi.handlers
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.model.content.components.ContentSource
 import com.devgary.contentcore.model.content.components.ContentType
+import com.devgary.contentlinkapi.content.ContentLinkException
 import com.devgary.contentlinkapi.content.ContentLinkHandler
+import com.devgary.contentlinkapi.content.ContentResult
 
 /**
  * [ContentLinkHandler] that tries to create [Content] from url by parsing the url.
@@ -23,8 +25,8 @@ class FallthroughContentLinkHandler(private val defaultContentType: ContentType?
         return false
     }
 
-    override suspend fun getContent(url: String): Content? {
-        return if (url.endsWith(".mp4")) {
+    override suspend fun getContent(url: String): ContentResult {
+        val content = if (url.endsWith(".mp4")) {
             Content(ContentSource.Url(url), ContentType.VIDEO)
         } else if (url.endsWith(".gif")) {
             Content(ContentSource.Url(url), ContentType.GIF)
@@ -34,6 +36,12 @@ class FallthroughContentLinkHandler(private val defaultContentType: ContentType?
             Content(ContentSource.Url(url), defaultContentType)
         } else {
             null
+        }
+        
+        return content?.let { 
+            ContentResult.Success(it)
+        } ?: run { 
+            ContentResult.Failure(ContentLinkException("Could not handle content: $url"))
         }
     }
 }

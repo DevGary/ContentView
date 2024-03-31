@@ -1,3 +1,6 @@
 package com.devgary.contentlinkapi.content
 
-class ContentLinkException(message: String) : Exception(message)
+open class ContentLinkException(message: String) : Exception(message)
+
+class ResponseDidNotContainContentException(message: String? = null) :
+    ContentLinkException(message = message ?: "Response did not contain expected content")

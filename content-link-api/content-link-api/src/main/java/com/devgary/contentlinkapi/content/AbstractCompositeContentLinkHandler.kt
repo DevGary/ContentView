@@ -26,18 +26,19 @@ abstract class AbstractCompositeContentLinkHandler : CompositeContentLinkHandler
         return contentHandlers.any { handler -> handler.canHandleLink(url) }
     }
 
-    override suspend fun getContent(url: String): Content? {
+    override suspend fun getContent(url: String): ContentResult {
         val firstContentLinkHandlerForUrl = contentHandlers.firstOrNull { handler ->
             handler.canHandleLink(url)
         }
 
-        firstContentLinkHandlerForUrl?.let { handler ->
-            return handler.getContent(url)
+        return firstContentLinkHandlerForUrl?.let { handler ->
+            handler.getContent(url)
         } ?: run {
-            Log.e(TAG, "No ${name<ContentLinkHandler>()} found for url = $url")
+            val errorString = "No ${name<ContentLinkHandler>()} found for url = $url"
+            Log.e(TAG, errorString)
+            
+            return ContentResult.Failure(ContentLinkException(errorString))
         }
-        
-        return null
     }
 
     override fun clearMemory() {
