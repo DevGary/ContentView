@@ -79,6 +79,7 @@ class BasicFragment : Fragment(), MenuProvider {
     private fun initViewModel() {
         basicViewModel.content.observe(viewLifecycleOwner) { 
             binding.contentview.showContent(it)
+            binding.contentview.activate()
         }
 
         basicViewModel.error.observe(viewLifecycleOwner) {
@@ -92,6 +93,7 @@ class BasicFragment : Fragment(), MenuProvider {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.contentview.dispose()
         _binding = null
     }
 }

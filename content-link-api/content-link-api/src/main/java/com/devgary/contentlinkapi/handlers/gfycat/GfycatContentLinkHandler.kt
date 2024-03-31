@@ -1,8 +1,7 @@
 package com.devgary.contentlinkapi.handlers.gfycat
 
-import com.devgary.contentcore.model.content.components.ContentSource
-import com.devgary.contentcore.model.content.components.ContentType
 import com.devgary.contentcore.model.content.Content
+import com.devgary.contentcore.model.content.DefaultContentCreator
 import com.devgary.contentcore.util.runIfLazyInitialized
 import com.devgary.contentlinkapi.handlers.gfycat.api.GfycatClient
 import com.devgary.contentlinkapi.handlers.gfycat.api.GfycatEndpoint
@@ -37,7 +36,7 @@ class GfycatContentLinkHandler(
         val response = gfycatClient.getGfycat(gfycatName)
         response.let {
             response.mp4Url?.let {
-                return Content(ContentSource.Url(it), ContentType.VIDEO)
+                return DefaultContentCreator.createVideoContent(videoUrl = it, thumbnailUrl = response.posterUrl)
             }
         }
 

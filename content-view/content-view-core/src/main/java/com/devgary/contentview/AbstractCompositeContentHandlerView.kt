@@ -5,32 +5,40 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Gravity
+import android.view.View
 import android.widget.FrameLayout
+import androidx.core.view.contains
+import com.devgary.contentcore.model.content.ActivatableContent
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentcore.util.TAG
-import com.devgary.contentcore.util.addViewIfNotExist
 import com.devgary.contentcore.util.classNameWithValue
 import com.devgary.contentcore.util.name
+import com.devgary.contentcore.util.removeFromParentView
+import com.devgary.contentview.interfaces.Activatable
 import com.devgary.contentview.interfaces.Disposable
 import com.devgary.contentview.interfaces.PlayPausable
 import com.devgary.contentview.interfaces.Recyclable
 import com.devgary.contentview.model.ScaleType
-import kotlin.reflect.KClass
+import com.devgary.contentview.util.generateIdIfNotExists
+import com.devgary.contentview.util.setGravityFrameLayoutParent
 
 abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : FrameLayout(context, attrs, defStyleAttr), ContentHandler, Disposable, PlayPausable {
+) : FrameLayout(context, attrs, defStyleAttr), ContentHandler, Disposable, PlayPausable, Activatable {
 
     private val contentHandlers = mutableListOf<ContentHandler>()
-    private var lastUsedHandler: ContentHandler? = null
-
+    var currentlyUsedHandler: ContentHandler? = null
+        private set
+    var content: Content? = null
+        private set
     private var viewPoolComposite: ViewPoolComposite? = null
 
     init {
         registerContentHandlers()
-        setViewScaleType(ScaleType.FILL_WIDTH)
+        setViewScaleType(ScaleType.FIT_CENTER)
     }
 
     private fun registerContentHandlers() {
@@ -48,6 +56,7 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     }
     
     private fun setContentHandlersVisibility(visibility: Int, excludedContentHandler: ContentHandler? = null) {
+        Log.d(TAG, "Hiding every ${name<ContentHandler>()} except $excludedContentHandler")
         contentHandlers
             .filter { handler -> handler != excludedContentHandler }
             .forEach { handler -> handler.setViewVisibility(visibility) }
@@ -76,19 +85,23 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
     }
     
     override fun showContent(content: Content) {
+        this.content = content
+        showContentInternal(content)
+    }
+    
+    private fun showContentInternal(content: Content) {
+        Log.d(TAG, "showContentInternal(content = $content) called")
         val firstContentHandlerForContent = contentHandlers.firstOrNull { handler ->
             handler.canShowContent(content)
         }
-
-        lastUsedHandler = null
-        setContentHandlersVisibility(GONE, excludedContentHandler = firstContentHandlerForContent)
-
+        
         firstContentHandlerForContent?.let { handler ->
+            currentlyUsedHandler = handler
             addContentHandlerViewIfNotAdded(handler)
-            handler.showContent(content) 
-            lastUsedHandler = handler
-        } ?: run { 
-            Log.e(TAG, "No ${name<ContentHandler>()} found for ${classNameWithValue(content)}") 
+            handler.showContent(content)
+            setContentHandlersVisibility(GONE, excludedContentHandler = currentlyUsedHandler)
+        } ?: run {
+            Log.e(TAG, "No ${name<ContentHandler>()} found for ${classNameWithValue(content)}")
         }
     }
 
@@ -100,12 +113,29 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
         val contentHandlerView = handler.getView()
         addViewIfNotExist(contentHandlerView)
     }
+    
+    private fun addViewIfNotExist(viewToAdd: View) {
+        if (contains(viewToAdd)) return
+        
+        processViewBeforeAdding(viewToAdd)
+        addView(viewToAdd)
+        processViewAfterAdding(viewToAdd)
+    }
+    
+    private fun processViewBeforeAdding(view: View) {
+        view.removeFromParentView()
+        view.generateIdIfNotExists()
+    }
+    
+    private fun processViewAfterAdding(view: View) {
+        view.setGravityFrameLayoutParent(Gravity.CENTER)
+    }
 
     override fun dispose() {
-        recycle()
         contentHandlers.forEach {
             (it as? Disposable)?.dispose()
         }
+        recycle()
     }
     
     private fun recycle() {
@@ -132,12 +162,24 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
         }
     }
 
+    override fun activate() {
+        (content as? ActivatableContent)?.let {
+            showContentInternal(it.contentWhenActivated)
+        }
+    }
+
+    override fun deactivate() {
+        (content as? ActivatableContent)?.let {
+            showContentInternal(it.contentWhenNotActivated)
+        }
+    }
+
     override fun onSaveInstanceState(): Parcelable? {
         val state = super.onSaveInstanceState()
         
         state?.let {
             val savedState = SavedState(it)
-            savedState.positionOfLastUsedContentHandler = contentHandlers.indexOf(lastUsedHandler)
+            savedState.positionOfLastUsedContentHandler = contentHandlers.indexOf(currentlyUsedHandler)
             return savedState
         } ?: run {
             return null

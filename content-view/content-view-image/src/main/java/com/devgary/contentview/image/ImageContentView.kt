@@ -20,8 +20,8 @@ class ImageContentView @JvmOverloads constructor(
 
     var scaleType: ScaleType? = null
         set(value) {
-            binding.photoview.scaleType = when(value) {
-                ScaleType.FILL_WIDTH -> ImageView.ScaleType.FIT_XY
+            binding.imageview.scaleType = when(value) {
+                ScaleType.FILL_WIDTH -> ImageView.ScaleType.CENTER_CROP
                 ScaleType.FIT_CENTER -> ImageView.ScaleType.FIT_CENTER
                 null -> null
             }
@@ -37,18 +37,22 @@ class ImageContentView @JvmOverloads constructor(
         @Suppress("IMPLICIT_CAST_TO_ANY") 
         val model = when(content.source) {
             is ContentSource.Drawable -> {
-                (content.source as ContentSource.Drawable).drawable
+                (content.source as ContentSource.Drawable).drawableResId
             }
             is ContentSource.Url -> {
                 (content.source as ContentSource.Url).url
             }
+            ContentSource.Empty -> null
             else -> null
         }
         
         model?.let {
             Glide.with(context)
                 .load(it)
-                .into(binding.photoview)
+                .fitCenter()
+                .into(binding.imageview)
+        } ?: run {
+            Glide.with(context).clear(binding.imageview)
         }
     }
 }

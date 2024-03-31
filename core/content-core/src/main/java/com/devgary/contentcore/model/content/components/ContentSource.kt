@@ -14,22 +14,28 @@ sealed class ContentSource {
             }
         }
     }
-    class Drawable(val drawable: android.graphics.drawable.Drawable) : ContentSource() {
+    
+    class Drawable(val drawableResId: Int) : ContentSource() {
         override fun areContentsTheSame(other: ContentSource): Boolean {
             if (this == other) return true
 
             return (other as? Drawable)?.let {
-                this.drawable == other.drawable
+                this.drawableResId == other.drawableResId
             } ?: run {
                 false
             }
         }
     }
+
+    object Empty : ContentSource() {
+        override fun areContentsTheSame(other: ContentSource) = true
+    }
     
     fun toLogString(): String {
         return when (this) {
-            is Drawable -> drawable.toString()
+            is Drawable -> drawableResId.toString()
             is Url -> url
+            is Empty -> "EMPTY"
         }
     }
 }

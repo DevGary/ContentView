@@ -5,8 +5,17 @@ import com.devgary.contentcore.util.annotations.Hacky
 
 val Any.TAG: String
     get() {
-        val tag = javaClass.simpleName
-        return if (tag.length <= 23) tag else tag.substring(0, 23)
+        val maxLength = 19
+
+        val trimmedTag = if (!javaClass.isAnonymousClass) {
+            val name = javaClass.simpleName
+            if (name.length <= maxLength) name else name.substring(0, maxLength)
+        } else {
+            val name = javaClass.name
+            if (name.length <= maxLength) name else name.substring(name.length - maxLength, name.length)
+        }
+
+        return trimmedTag + "@ID=" + hashCode().toString().substring(0, 4)
     }
 
 /**

@@ -16,7 +16,7 @@
         <com.devgary.contentview.ui.ContentView
             android:id="@+id/contentview"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,6 +30,17 @@
             app:layout_constraintLeft_toLeftOf="@id/contentview"
             app:layout_constraintRight_toRightOf="@id/contentview"
             android:textSize="10sp"
+            />        
+        
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/debugInfoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#88000000"
+            app:layout_constraintTop_toTopOf="@id/contentview"
+            app:layout_constraintLeft_toLeftOf="@id/contentview"
+            tools:text="Debug Info"
+            android:textSize="9sp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

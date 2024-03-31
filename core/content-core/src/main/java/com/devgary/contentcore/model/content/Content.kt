@@ -6,7 +6,9 @@ import com.devgary.contentcore.model.content.components.ContentType
 open class Content(
     val source: ContentSource,
     val type: ContentType,
-)
+) {
+    open fun toLogString() =  "$type ${source.toLogString()}"
+}
 
 fun Content.areContentsTheSame(other: Content): Boolean {
     if (this == other) return true
