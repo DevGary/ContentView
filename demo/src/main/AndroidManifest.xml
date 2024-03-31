@@ -16,7 +16,7 @@
         android:theme="@style/Theme.ContentViewDemo"
         tools:targetApi="31">
         <activity
-            android:name="com.devgary.contentviewdemo.screens.basic.BasicActivity"
+            android:name="com.devgary.contentviewdemo.screens.detail.DetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

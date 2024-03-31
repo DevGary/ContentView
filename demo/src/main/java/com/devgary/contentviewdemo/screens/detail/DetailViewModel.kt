@@ -1,4 +1,4 @@
-package com.devgary.contentviewdemo.screens.basic
+package com.devgary.contentviewdemo.screens.detail
 
 import androidx.lifecycle.*
 import com.devgary.contentcore.model.content.Content
@@ -16,7 +16,7 @@ import com.devgary.testcore.SampleContent
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class BasicViewModel : ViewModel() {
+class DetailViewModel : ViewModel() {
     private val contentLinkHandler: CompositeContentLinkHandler by lazy {
         object : AbstractCompositeContentLinkHandler() {
             override fun provideContentHandlers(): List<ContentLinkHandler> {
