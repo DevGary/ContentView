@@ -8,6 +8,12 @@
     </item>
     
     <item
+        android:id="@+id/menu_cancel_load"
+        app:showAsAction="never"
+        android:title="Cancel Load">
+    </item>
+    
+    <item
         android:id="@+id/menu_image"
         app:showAsAction="never"
         android:title="Image Url (Direct)">

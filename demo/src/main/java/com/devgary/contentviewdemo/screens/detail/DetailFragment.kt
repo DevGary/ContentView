@@ -2,7 +2,6 @@ package com.devgary.contentviewdemo.screens.detail
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -10,10 +9,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.name
+import com.devgary.contentcore.util.visibleOrGone
 import com.devgary.contentviewdemo.R
 import com.devgary.contentviewdemo.databinding.FragmentDetailBinding
 import com.devgary.testcore.SampleContent
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailFragment : Fragment(), MenuProvider {
     private val detailViewModel: DetailViewModel by lazy {
         ViewModelProvider(this).get(DetailViewModel::class.java)
@@ -69,6 +71,10 @@ class DetailFragment : Fragment(), MenuProvider {
                 detailViewModel.clearMemory()
                 return true
             }
+            R.id.menu_cancel_load -> {
+                detailViewModel.cancelLoad()
+                return true
+            }
             else -> return false
         }.let { url ->
             detailViewModel.loadContent(url)
@@ -77,17 +83,31 @@ class DetailFragment : Fragment(), MenuProvider {
     }
     
     private fun initViewModel() {
-        detailViewModel.content.observe(viewLifecycleOwner) { 
-            binding.contentview.showContent(it)
-            binding.contentview.activate()
-        }
+        detailViewModel.detailDataState.observe(viewLifecycleOwner) {
+            if (it.loadingVisibility) {
+                binding.loadingIndicator.show()
+            } else {
+                if (it.content == null) {
+                    binding.loadingIndicator.hide()
+                } else {
+                    // TODO: If we are showing content, we want to hide the loading
+                    // indicator only after the content is done loading/rendering.
+                    // However, currently ContentView does not report that information
+                    // so just dont hide the loading indicator and when the content is
+                    // rendered, it will cover the indicator (if content is large enough)
+                }
+            }
 
-        detailViewModel.error.observe(viewLifecycleOwner) {
-            Toast.makeText(
-                /* context = */ context,
-                /* text = */ "Error: $it",
-                /* duration = */ Toast.LENGTH_LONG
-            ).show()
+            binding.contentview.visibleOrGone(it.contentVisibility)
+            it.content?.let { content ->
+                binding.contentview.showContent(content)
+                binding.contentview.activate()
+            } ?: run { 
+                binding.contentview.deactivate()
+            }
+
+            binding.errorView.visibleOrGone(it.errorVisibility)
+            binding.errorTextView.text = it.errorText
         }
     }
 
