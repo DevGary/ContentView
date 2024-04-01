@@ -124,4 +124,16 @@ class CollectionContentView @JvmOverloads constructor(
             }
         }
     }
+    
+    fun dispose() {
+        val viewPagerRecyclerView = binding.viewpager.get(0) as RecyclerView
+
+        for (i in 0 until viewPagerRecyclerView.childCount) {
+            val view = viewPagerRecyclerView.getChildAt(i)
+            val viewHolder = viewPagerRecyclerView.getChildViewHolder(view)
+            (viewHolder as? CollectionContentViewAdapter.ContentViewHolder)?.let {
+                it.binding.contentview.dispose()
+            }
+        }
+    }
 }

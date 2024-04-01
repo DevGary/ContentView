@@ -5,9 +5,10 @@ import android.view.View
 import com.devgary.contentcore.model.content.CollectionContent
 import com.devgary.contentcore.model.content.Content
 import com.devgary.contentview.ContentHandler
+import com.devgary.contentview.interfaces.Disposable
 import com.devgary.contentview.model.ScaleType
 
-class CollectionContentHandler(private val context: Context) : ContentHandler {
+class CollectionContentHandler(private val context: Context) : ContentHandler, Disposable {
     private var collectionContentView: CollectionContentView? = null
     private var scaleType: ScaleType? = null
 
@@ -39,5 +40,9 @@ class CollectionContentHandler(private val context: Context) : ContentHandler {
         (content as CollectionContent).let {
             collectionContentView?.showContent(content)
         }
+    }
+
+    override fun dispose() {
+        collectionContentView?.dispose()
     }
 }
