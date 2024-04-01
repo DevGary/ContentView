@@ -14,6 +14,9 @@ Content Link Handlers must implement the `ContentLinkHandler` interface that con
 
 Similarily, Content Views must implement the `ContentHandler` interface that contains a function that returns whether the `ContentHandler` can show some `Content` and  another function that shows the `Content` on a View. Then, all the individual `ContentHandlers` (eg `ImageContentHandler`, `VideoContentHandler`) are combined using `AbstractCompositeContentHandlerView` which itself implements the same `ContentHandler` interface but handles content using the individual `ContentHandlers`.
 
+# Status
+The library is still in **early** development and I would not recommend using it in production, especially the `ContentView` component.
+
 # Instructions
 ```gradle
 repositories {
@@ -27,6 +30,3 @@ implementation "com.github.DevGary.ContentView:content-view:<version>"
 ```
 
 See [Releases](https://github.com/DevGary/ContentView/releases) for versions
-
-# Status
-The library is still in **early** development and I would not recommend using it in production, especially the `ContentView` component.
