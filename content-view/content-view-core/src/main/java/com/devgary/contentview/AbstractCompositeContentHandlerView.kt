@@ -59,7 +59,19 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
         Log.d(TAG, "Hiding every ${name<ContentHandler>()} except $excludedContentHandler")
         contentHandlers
             .filter { handler -> handler != excludedContentHandler }
-            .forEach { handler -> handler.setViewVisibility(visibility) }
+            .forEach { handler -> 
+                handler.setViewVisibility(visibility)
+                (handler as? Disposable)?.dispose()
+            }
+    }
+    
+    private fun disposeContentHandlers(excludedContentHandler: ContentHandler? = null) {
+        Log.d(TAG, "Disposing every ${name<ContentHandler>()} except $excludedContentHandler")
+        contentHandlers
+            .filter { handler -> handler != excludedContentHandler }
+            .forEach { handler -> 
+                (handler as? Disposable)?.dispose()
+            }
     }
 
     final override fun setViewScaleType(scaleType: ScaleType) {
@@ -100,6 +112,7 @@ abstract class AbstractCompositeContentHandlerView @JvmOverloads constructor(
             addContentHandlerViewIfNotAdded(handler)
             handler.showContent(content)
             setContentHandlersVisibility(GONE, excludedContentHandler = currentlyUsedHandler)
+            disposeContentHandlers(excludedContentHandler = currentlyUsedHandler)
         } ?: run {
             Log.e(TAG, "No ${name<ContentHandler>()} found for ${classNameWithValue(content)}")
         }
