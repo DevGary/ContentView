@@ -11,6 +11,7 @@ import com.devgary.contentcore.util.TAG
 import com.devgary.contentcore.util.getThroughReflection
 import com.devgary.contentcore.util.trim
 import com.devgary.contentlinkapi.content.ContentLinkHandler
+import com.devgary.contentlinkapi.content.ContentResult
 import com.devgary.contentview.BuildConfig
 import com.devgary.contentview.ContentHandler
 import com.devgary.contentview.ViewPoolComposite
@@ -119,13 +120,16 @@ class ContentAdapter(
             val contentUrl = contentUrl ?: return
 
             CoroutineScope(Dispatchers.IO).launch {
-                contentLinkHandler.getContent(contentUrl)?.let { content ->
-                    Handler(Looper.getMainLooper()).post {
-                        binding.contentview.setAutoplay(true)
-                        binding.contentview.setViewVisibility(View.VISIBLE)
-                        binding.contentview.showContent(content)
-                        binding.contentview.play()
+                when (val contentResult = contentLinkHandler.getContent(contentUrl)) {
+                    is ContentResult.Success -> {
+                        Handler(Looper.getMainLooper()).post {
+                            binding.contentview.setAutoplay(true)
+                            binding.contentview.setViewVisibility(View.VISIBLE)
+                            binding.contentview.showContent(contentResult.content)
+                            binding.contentview.play()
+                        }
                     }
+                    is ContentResult.Failure -> {}
                 }
             }
         }

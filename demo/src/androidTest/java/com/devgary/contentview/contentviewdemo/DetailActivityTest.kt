@@ -7,7 +7,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.clickMenu
 import com.devgary.contentview.image.ImageContentView
 import com.devgary.contentview.video.ExoVideoView
-import com.devgary.contentviewdemo.screens.basic.BasicActivity
+import com.devgary.contentviewdemo.screens.detail.DetailActivity
 import com.devgary.testandroidcore.util.AndroidTestUtils.getCurrentActivity
 import com.devgary.testandroidcore.util.WaitUtils
 import com.devgary.testandroidcore.util.WaitUtils.withDelay
@@ -18,13 +18,13 @@ import com.devgary.contentviewdemo.R
 import org.junit.Before
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class BasicActivityTest {
+class DetailActivityTest {
     private fun isContentViewVisible() = (getCurrentActivity()?.findViewById<View>(R.id.contentview)?.height ?: 0) > 1
-    private lateinit var activityScenario: ActivityScenario<BasicActivity>
+    private lateinit var activityScenario: ActivityScenario<DetailActivity>
 
     @Before
     fun setup() {
-        activityScenario = ActivityScenario.launch(BasicActivity::class.java)
+        activityScenario = ActivityScenario.launch(DetailActivity::class.java)
     }
     
     @Test

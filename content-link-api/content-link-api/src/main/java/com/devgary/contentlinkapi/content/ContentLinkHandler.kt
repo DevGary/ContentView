@@ -15,5 +15,5 @@ interface ContentLinkHandler {
      * 
      * @return [Content] null if url was unable to be converted
      */
-    suspend fun getContent(url: String): Content?
+    suspend fun getContent(url: String): ContentResult
 }

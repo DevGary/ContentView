@@ -6,6 +6,7 @@ import com.devgary.contentcore.model.content.components.ContentType
 import com.devgary.contentcore.util.containsIgnoreCase
 import com.devgary.contentlinkapi.handlers.FallthroughContentLinkHandler
 import com.devgary.contentlinkapi.content.ContentLinkHandler
+import com.devgary.contentlinkapi.content.ContentResult
 
 /**
  * Example of creating your own [ContentLinkHandler] via composition
@@ -16,19 +17,26 @@ import com.devgary.contentlinkapi.content.ContentLinkHandler
 class DemoFallthroughContentLinkHandler : ContentLinkHandler {
     private val fallthroughContentLinkHandler by lazy { FallthroughContentLinkHandler() }
     
-    private val matchToContentType = mapOf(
+    private val urlContentType = mapOf(
         "images.unsplash.com" to ContentType.IMAGE
     )
     
     override fun canHandleLink(url: String): Boolean {
-        if (matchToContentType.keys.any { match -> url.containsIgnoreCase(match) }) return true
+        if (urlContentType.keys.any { match -> url.containsIgnoreCase(match) }) return true
         return fallthroughContentLinkHandler.canHandleLink(url)
     }
 
-    override suspend fun getContent(url: String): Content? {
-        matchToContentType.keys.firstOrNull { match -> url.containsIgnoreCase(match) }?.let { key ->
-            return Content(ContentSource.Url(url), matchToContentType[key]!!)
+    override suspend fun getContent(url: String): ContentResult {
+        val urlContentType = urlContentType
+            .firstNotNullOfOrNull { (url, contentType) ->
+                contentType.takeIf { url.containsIgnoreCase(url) }
+            }
+        
+        urlContentType?.let {
+            val content = Content(source = ContentSource.Url(url), type = it)
+            return ContentResult.Success(content)
         }
+
         return fallthroughContentLinkHandler.getContent(url)
     }
 }

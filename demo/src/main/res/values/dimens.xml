@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--- region Page Stage Info -->
+    <dimen name="page_state_info_padding">16dp</dimen>
+    <dimen name="page_state_info_icon_size">36dp</dimen>
+    <dimen name="page_state_info_text_size">16sp</dimen>
+    <dimen name="page_state_info_icon_text_spacing">12dp</dimen>
+    <!-- endregion -->
+</resources>

@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devgary.contentlinkapi.content.ContentLinkHandler
+import com.devgary.contentlinkapi.content.ContentResult
 import com.devgary.contentview.ui.ContentView
 import com.devgary.contentviewdemo.util.cancel
+import com.devgary.testcore.SampleContent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -33,23 +35,16 @@ class ListViewModel @Inject constructor(
         if (_urls.value == null) {
             _urls.value = listOf(
                 "https://i.imgur.com/pRaLUY1.jpg",
-                "https://gfycat.com/FoolishCompetentAegeancat",
-                "https://streamable.com/hwa6l",
-                "https://streamable.com/m/kevin-gausman-in-play-run-s-to-mike-zunino",
+                SampleContent.STREAMABLE.BASIC_URL,
+                SampleContent.STREAMABLE.HLS_URL,
                 "https://i.redd.it/bco4cqkcv8q91.jpg",
-                "https://gfycat.com/cookedbadasianwaterbuffalo",
-                "https://gfycat.com/equatorialconcernedfinch",
-                "https://gfycat.com/ashamedlonelydikkops-adventure-time-sure-thing-definitely-of-course",
-                "https://gfycat.com/lawfuljitteryhoneybadger",
-                "https://gfycat.com/admirableoldcoelacanth-do-not-want-no-thanks-nope",
-                "https://gfycat.com/viciousresponsibleafricanhornbill",
-                "https://gfycat.com/famousbabyishleonberger",
-                "https://gfycat.com/admirablepracticalarizonaalligatorlizard",
-                "https://gfycat.com/admirablegracefulboa",
+                "https://i.imgur.com/ORUbOpd.jpg",
+                "https://i.imgur.com/O3i9yR4.jpg",
+                "https://i.imgur.com/M0ggypg.jpg",
+                "https://i.imgur.com/q4Hb0rw.jpg",
                 "https://streamable.com/i7wmij",
                 "https://streamable.com/vp67j",
-                "https://gfycat.com/menacinggracefuldavidstiger",
-                "https://gfycat.com/heartfeltinfinitechrysalis-leagueoflegends-teemo",
+                "https://imgur.com/gallery/JmMtAjN",
             )
         }
     }
@@ -57,8 +52,14 @@ class ListViewModel @Inject constructor(
     fun loadContent(url: String, contentView: ContentView) {
         getContentJob.cancel()
         getContentJob = viewModelScope.launch(coroutineExceptionHandler) {
-            contentLinkHandler.getContent(url)?.let { it ->
-                contentView.showContent(it)
+            when (val contentResult = contentLinkHandler.getContent(url)) {
+                is ContentResult.Success -> {
+                    contentView.showContent(contentResult.content)
+                }
+
+                is ContentResult.Failure -> {
+                    _error.postValue(contentResult.error?.message ?: "Error")
+                }
             }
         }
     }  
